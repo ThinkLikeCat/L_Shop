@@ -1,0 +1,141 @@
+# -------------------------
+# Node.js
+# -------------------------
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+jspm_packages/
+
+# -------------------------
+# Logs
+# -------------------------
+logs/
+*.log
+*.log.*
+log.txt
+debug.log
+error.log
+
+# -------------------------
+# Runtime data
+# -------------------------
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# -------------------------
+# Environment variables
+# -------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# -------------------------
+# Build output
+# -------------------------
+dist/
+build/
+out/
+tmp/
+temp/
+.cache/
+.cache-loader/
+coverage/
+.nyc_output/
+
+# -------------------------
+# TypeScript (если вдруг появится)
+# -------------------------
+*.tsbuildinfo
+
+# -------------------------
+# VS Code
+# -------------------------
+.vscode/
+.history/
+*.code-workspace
+
+# -------------------------
+# JetBrains IDEs (WebStorm, IntelliJ)
+# -------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# -------------------------
+# macOS system files
+# -------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# -------------------------
+# Windows system files
+# -------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# -------------------------
+# Linux system files
+# -------------------------
+*~
+.nfs*
+
+# -------------------------
+# Temporary files
+# -------------------------
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.backup
+*.orig
+*.old
+
+# -------------------------
+# Test artifacts
+# -------------------------
+coverage/
+test-results/
+reports/
+
+# -------------------------
+# Docker
+# -------------------------
+docker-compose.override.yml
+.docker/
+docker-data/
+
+# -------------------------
+# Git
+# -------------------------
+.gitignore-global
+.gitconfig
+.gitmodules
+
+# -------------------------
+# Misc
+# -------------------------
+*.local
+*.cache
+*.log
+*.pid
+*.seed
+*.tgz
+*.zip
+*.7z
+*.rar

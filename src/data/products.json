@@ -1,0 +1,72 @@
+[
+  {
+    "id": "a3f1c2b8-9d4e-4e2a-8c1f-2b7e9f1a4d11",
+    "title": "Casio G-Shock GA-2100",
+    "description": "Ударопрочные спортивные часы с карбоновым корпусом и водозащитой 200 м.",
+    "price": 12990,
+    "category": "sport",
+    "available": true,
+    "brand": "Casio",
+    "mechanism": "Quartz",
+    "waterResistance": "200m",
+    "caseMaterial": "Carbon",
+    "strapMaterial": "Resin",
+    "image": "/images/gshock-ga2100.jpg"
+  },
+  {
+    "id": "f92b7e3c-4a1d-4c8f-9b2a-1c3d8f9e7a22",
+    "title": "Seiko 5 Sports SRPD55K1",
+    "description": "Автоматические часы с прозрачной задней крышкой и водозащитой 100 м.",
+    "price": 28990,
+    "category": "classic",
+    "available": true,
+    "brand": "Seiko",
+    "mechanism": "Automatic",
+    "waterResistance": "100m",
+    "caseMaterial": "Steel",
+    "strapMaterial": "Steel",
+    "image": "/images/seiko-srpd55k1.jpg"
+  },
+  {
+    "id": "c1e8d4f9-7b3a-4f2c-8e1d-9a3b7c2f5e33",
+    "title": "Apple Watch Series 9",
+    "description": "Умные часы с OLED‑дисплеем, датчиками здоровья и быстрой зарядкой.",
+    "price": 39990,
+    "category": "smart",
+    "available": true,
+    "brand": "Apple",
+    "mechanism": "Smart",
+    "waterResistance": "50m",
+    "caseMaterial": "Aluminum",
+    "strapMaterial": "Silicone",
+    "image": "/images/apple-watch-s9.jpg"
+  },
+  {
+    "id": "e7b2c9d1-3f4a-4b8e-9d2c-1f8a3e7b9c44",
+    "title": "Tissot PRX Powermatic 80",
+    "description": "Стильные автоматические часы с 80‑часовым запасом хода.",
+    "price": 69990,
+    "category": "luxury",
+    "available": false,
+    "brand": "Tissot",
+    "mechanism": "Automatic",
+    "waterResistance": "100m",
+    "caseMaterial": "Steel",
+    "strapMaterial": "Steel",
+    "image": "/images/tissot-prx.jpg"
+  },
+  {
+    "id": "b4d9f1e2-8c3a-4f1d-9e2b-7a1c3f8e5d55",
+    "title": "Casio Vintage A168",
+    "description": "Легендарные ретро‑часы с подсветкой и металлическим браслетом.",
+    "price": 4990,
+    "category": "retro",
+    "available": true,
+    "brand": "Casio",
+    "mechanism": "Quartz",
+    "waterResistance": "30m",
+    "caseMaterial": "Plastic",
+    "strapMaterial": "Steel",
+    "image": "/images/casio-a168.jpg"
+  }
+]
