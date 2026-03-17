@@ -1,0 +1,83 @@
+.tag-heuer {
+    width: 100%;
+    padding: 40px 0 80px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.tag-heuer__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    align-items: stretch;
+}
+.tag-heuer__banner {
+    position: relative;
+    width: 100%;
+    height: 100%; 
+    overflow: hidden;
+    background-color: #000;
+    display: flex;
+}
+
+.tag-heuer__banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
+
+.tag-heuer__btn {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 18px 60px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700; 
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    z-index: 10;
+    background: transparent;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.tag-heuer__btn:hover {
+    background: rgba(255, 255, 255, 0.1); 
+    border-color: #FFFFFF; 
+    transform: translateX(-50%) translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tag-heuer__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+}
+
+.tag-heuer__grid .product-card {
+    margin: 0 !important; 
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100%;
+    box-sizing: border-box;
+    border: none; 
+    background: #fff;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.tag-heuer__grid .product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+}
+
+.tag-heuer__grid .product-card__info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
