@@ -1,8 +1,8 @@
-# 🛒 L_Shop - Интернет-магазин
+# 🛒 L_Shop - Система авторизации
 
 ## 📋 Описание проекта
 
-L_Shop - это полнофункциональный бэкенд для интернет-магазина с системой регистрации пользователей, каталогом товаров, корзиной и оформлением доставки.
+L_Shop - система авторизации пользователей с регистрацией, входом в систему и управлением сессиями через HttpOnly cookies.
 
 ## 🏗️ Структура проекта
 
@@ -17,11 +17,7 @@ L_Shop/
 │   └── config.js             # Конфигурация сервера
 │
 ├── controllers/
-│   ├── authController.js     # Контроллер авторизации
-│   ├── userController.js     # Контроллер пользователей
-│   ├── productController.js  # Контроллер товаров
-│   ├── cartController.js     # Контроллер корзины
-│   └── deliveryController.js # Контроллер доставки
+│   └── authController.js     # Контроллер авторизации
 │
 ├── middlewares/
 │   ├── authMiddleware.js     # Проверка авторизации
@@ -36,29 +32,21 @@ L_Shop/
 │   └── Category.js           # Модель категории
 │
 ├── routes/
-│   ├── authRoutes.js         # Маршруты авторизации
-│   ├── userRoutes.js         # Маршруты пользователей
-│   ├── productRoutes.js      # Маршруты товаров
-│   ├── cartRoutes.js         # Маршруты корзины
-│   └── deliveryRoutes.js     # Маршруты доставки
+│   └── authRoutes.js         # Маршруты авторизации
 │
 ├── services/
-│   ├── authService.js        # Сервис авторизации
-│   ├── productService.js     # Сервис товаров
-│   ├── cartService.js        # Сервис корзины
-│   └── deliveryService.js    # Сервис доставки
+│   └── authService.js        # Сервис авторизации
 │
 ├── utils/
 │   ├── fileManager.js        # Работа с JSON файлами
 │   ├── cookieHelper.js       # Работа с cookies
 │   └── validators.js         # Валидаторы данных
 │
-└── data/
-    ├── users.json            # Данные пользователей
-    ├── products.json         # Данные товаров
-    ├── carts.json            # Данные корзин
-    ├── orders.json           # Данные заказов
-    └── categories.json       # Данные категорий
+├── data/
+│   └── users.json            # Данные пользователей
+│
+└── tests/
+    └── auth.test.js          # Тесты авторизации
 ```
 
 ---
@@ -74,6 +62,9 @@ npm run dev
 
 # Запуск в продакшн режиме
 npm start
+
+# Запуск тестов
+node tests/auth.test.js
 ```
 
 ---
@@ -163,6 +154,8 @@ POST /api/auth/login
 POST /api/auth/logout
 ```
 
+**Требует авторизации:** ✅
+
 **Response (200):**
 ```json
 {
@@ -210,506 +203,15 @@ GET /api/users/profile
     "id": "uuid-string",
     "name": "Иван Иванов",
     "email": "ivan@example.com",
-    "login": "ivan_ivanov",
-    "phone": "+79001234567",
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "cartId": "cart-uuid",
-    "orders": []
+    "login": "ivan_ivanov"
   }
 }
 ```
 
 ---
 
-### Обновить профиль пользователя
-```
-PUT /api/users/profile
-```
+## 📝 Модель пользователя
 
-**Требует авторизации:** ✅
-
-**Request Body:**
-```json
-{
-  "name": "Иван Петров",
-  "phone": "+79009876543"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Профиль обновлен",
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Петров",
-    "phone": "+79009876543"
-  }
-}
-```
-
----
-
-## 📦 Товары (`/api/products`)
-
-### Получить список товаров
-```
-GET /api/products
-```
-
-**Query Parameters:**
-| Параметр | Тип | Описание |
-|----------|-----|----------|
-| `search` | string | Поиск по названию/описанию |
-| `category` | string | Фильтр по категории |
-| `minPrice` | number | Минимальная цена |
-| `maxPrice` | number | Максимальная цена |
-| `inStock` | boolean | Только в наличии |
-| `sortBy` | string | Сортировка: `price`, `name`, `createdAt` |
-| `sortOrder` | string | Порядок: `asc`, `desc` |
-| `page` | number | Номер страницы (по умолчанию 1) |
-| `limit` | number | Количество на странице (по умолчанию 20) |
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "products": [
-      {
-        "id": "uuid-string",
-        "name": "Смартфон Samsung Galaxy",
-        "description": "Флагманский смартфон",
-        "price": 59990,
-        "discountPrice": 49990,
-        "category": "electronics",
-        "images": ["image1.jpg", "image2.jpg"],
-        "stock": 15,
-        "rating": 4.5,
-        "reviews": 128,
-        "characteristics": {
-          "color": "black",
-          "memory": "256GB"
-        },
-        "createdAt": "2026-03-13T18:00:00.000Z"
-      }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 5,
-      "totalItems": 100,
-      "itemsPerPage": 20
-    }
-  }
-}
-```
-
----
-
-### Получить товар по ID
-```
-GET /api/products/:id
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "product": {
-    "id": "uuid-string",
-    "name": "Смартфон Samsung Galaxy",
-    "description": "Флагманский смартфон с лучшими характеристиками",
-    "price": 59990,
-    "discountPrice": 49990,
-    "category": {
-      "id": "cat-uuid",
-      "name": "Электроника",
-      "slug": "electronics"
-    },
-    "images": ["image1.jpg", "image2.jpg"],
-    "stock": 15,
-    "rating": 4.5,
-    "reviews": [
-      {
-        "id": "review-uuid",
-        "userId": "user-uuid",
-        "userName": "Иван",
-        "rating": 5,
-        "comment": "Отличный товар!",
-        "createdAt": "2026-03-13T18:00:00.000Z"
-      }
-    ],
-    "characteristics": {
-      "color": "black",
-      "memory": "256GB",
-      "screen": "6.7 дюймов"
-    },
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "updatedAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Получить категории товаров
-```
-GET /api/products/categories
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "categories": [
-    {
-      "id": "cat-uuid",
-      "name": "Электроника",
-      "slug": "electronics",
-      "icon": "📱",
-      "productCount": 150
-    },
-    {
-      "id": "cat-uuid-2",
-      "name": "Одежда",
-      "slug": "clothing",
-      "icon": "👕",
-      "productCount": 320
-    }
-  ]
-}
-```
-
----
-
-## 🛒 Корзина (`/api/cart`)
-
-> ⚠️ Все эндпоинты корзины требуют авторизации
-
-### Получить корзину пользователя
-```
-GET /api/cart
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "cart": {
-    "id": "cart-uuid",
-    "userId": "user-uuid",
-    "items": [
-      {
-        "id": "item-uuid",
-        "productId": "product-uuid",
-        "product": {
-          "id": "product-uuid",
-          "name": "Смартфон Samsung Galaxy",
-          "price": 59990,
-          "discountPrice": 49990,
-          "images": ["image1.jpg"],
-          "stock": 15
-        },
-        "quantity": 2,
-        "price": 99980
-      }
-    ],
-    "totalItems": 2,
-    "totalPrice": 99980,
-    "discountPrice": 83980,
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "updatedAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Добавить товар в корзину
-```
-POST /api/cart/items
-```
-
-**Request Body:**
-```json
-{
-  "productId": "product-uuid",
-  "quantity": 2
-}
-```
-
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Товар добавлен в корзину",
-  "cartItem": {
-    "id": "item-uuid",
-    "productId": "product-uuid",
-    "quantity": 2,
-    "price": 99980
-  }
-}
-```
-
----
-
-### Обновить количество товара в корзине
-```
-PUT /api/cart/items/:itemId
-```
-
-**Request Body:**
-```json
-{
-  "quantity": 3
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Количество обновлено",
-  "cartItem": {
-    "id": "item-uuid",
-    "quantity": 3,
-    "price": 149970
-  }
-}
-```
-
----
-
-### Удалить товар из корзины
-```
-DELETE /api/cart/items/:itemId
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Товар удален из корзины"
-}
-```
-
----
-
-### Очистить корзину
-```
-DELETE /api/cart
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Корзина очищена"
-}
-```
-
----
-
-## 🚚 Доставка (`/api/delivery`)
-
-> ⚠️ Все эндпоинты доставки требуют авторизации
-
-### Создать заказ на доставку
-```
-POST /api/delivery
-```
-
-**Request Body:**
-```json
-{
-  "address": {
-    "city": "Москва",
-    "street": "ул. Пушкина",
-    "house": "10",
-    "apartment": "25",
-    "postalCode": "123456"
-  },
-  "phone": "+79001234567",
-  "email": "ivan@example.com",
-  "deliveryDate": "2026-03-20",
-  "deliveryTime": "10:00-14:00",
-  "comment": "Позвонить перед доставкой",
-  "paymentMethod": "card"
-}
-```
-
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Заказ успешно оформлен",
-  "order": {
-    "id": "order-uuid",
-    "userId": "user-uuid",
-    "items": [...],
-    "deliveryAddress": {
-      "city": "Москва",
-      "street": "ул. Пушкина",
-      "house": "10",
-      "apartment": "25",
-      "postalCode": "123456"
-    },
-    "phone": "+79001234567",
-    "email": "ivan@example.com",
-    "deliveryDate": "2026-03-20",
-    "deliveryTime": "10:00-14:00",
-    "totalPrice": 99980,
-    "status": "pending",
-    "paymentStatus": "pending",
-    "paymentMethod": "card",
-    "createdAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Получить список заказов пользователя
-```
-GET /api/delivery
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "orders": [
-    {
-      "id": "order-uuid",
-      "items": [
-        {
-          "productId": "product-uuid",
-          "productName": "Смартфон Samsung Galaxy",
-          "quantity": 2,
-          "price": 99980,
-          "image": "image1.jpg"
-        }
-      ],
-      "status": "delivered",
-      "totalPrice": 99980,
-      "deliveryDate": "2026-03-20",
-      "createdAt": "2026-03-13T18:00:00.000Z"
-    }
-  ]
-}
-```
-
----
-
-### Получить заказ по ID
-```
-GET /api/delivery/:orderId
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "order": {
-    "id": "order-uuid",
-    "userId": "user-uuid",
-    "items": [...],
-    "deliveryAddress": {...},
-    "phone": "+79001234567",
-    "email": "ivan@example.com",
-    "status": "processing",
-    "paymentStatus": "paid",
-    "paymentMethod": "card",
-    "totalPrice": 99980,
-    "deliveryDate": "2026-03-20",
-    "deliveryTime": "10:00-14:00",
-    "comment": "Позвонить перед доставкой",
-    "trackingNumber": "TRACK123456",
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "updatedAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Отменить заказ
-```
-PUT /api/delivery/:orderId/cancel
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Заказ отменен",
-  "order": {
-    "id": "order-uuid",
-    "status": "cancelled"
-  }
-}
-```
-
----
-
-### Подтвердить оплату (с капчей)
-```
-POST /api/delivery/:orderId/pay
-```
-
-**Request Body:**
-```json
-{
-  "captchaToken": "captcha-response-token",
-  "cardNumber": "****1234",
-  "cardExpiry": "12/26",
-  "cardCvv": "***"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Оплата успешно проведена",
-  "order": {
-    "id": "order-uuid",
-    "paymentStatus": "paid",
-    "status": "processing"
-  }
-}
-```
-
----
-
-## 📊 Статусы заказа
-
-| Статус | Описание |
-|--------|----------|
-| `pending` | Ожидает оплаты |
-| `processing` | В обработке |
-| `shipped` | Отправлен |
-| `delivered` | Доставлен |
-| `cancelled` | Отменен |
-
----
-
-## 🔒 Статусы оплаты
-
-| Статус | Описание |
-|--------|----------|
-| `pending` | Ожидает оплаты |
-| `paid` | Оплачено |
-| `failed` | Ошибка оплаты |
-| `refunded` | Возврат средств |
-
----
-
-## 📝 Модели данных
-
-### User (Пользователь)
 ```typescript
 interface User {
   id: string;                    // UUID
@@ -717,7 +219,7 @@ interface User {
   email: string;                 // Email (уникальный)
   login: string;                 // Логин (уникальный)
   phone: string;                 // Телефон
-  password: string;              // Хешированный пароль
+  password: string;              // Пароль
   avatar?: string;               // URL аватара
   cartId?: string;               // ID активной корзины
   sessionId: string;             // ID сессии
