@@ -1,0 +1,25 @@
+[
+  {
+    "id": "1773500695213",
+    "userId": "test-user",
+    "basket": [
+      {
+        "count": 2,
+        "product": {
+          "id": "a3f1c2b8-9d4e-4e2a-8c1f-2b7e9f1a4d11",
+          "title": "Casio G-Shock GA-2100",
+          "description": "Ударопрочные спортивные часы с карбоновым корпусом и водозащитой 200 м.",
+          "price": 12990,
+          "category": "sport",
+          "available": true,
+          "brand": "Casio",
+          "mechanism": "Quartz",
+          "waterResistance": "200m",
+          "caseMaterial": "Carbon",
+          "strapMaterial": "Resin",
+          "image": "/images/gshock-ga2100.jpg"
+        }
+      }
+    ]
+  }
+]
