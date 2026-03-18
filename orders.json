@@ -14,7 +14,7 @@
     "email": "ivan@example.com",
     "deliveryDate": "2026-03-20",
     "deliveryTime": "10:00-14:00",
-    "comment": "????????? ????? ?????????",
+    "comment": "Комментарий",
     "paymentMethod": "card",
     "status": "cancelled",
     "paymentStatus": "pending",
