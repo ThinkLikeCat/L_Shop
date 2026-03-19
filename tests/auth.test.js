@@ -4,7 +4,6 @@ const path = require('path');
 
 const BASE_URL = 'http://localhost:3000';
 
-// Цвета для вывода
 const colors = {
   green: '\x1b[32m',
   red: '\x1b[31m',
@@ -12,7 +11,6 @@ const colors = {
   reset: '\x1b[0m'
 };
 
-// HTTP запрос с cookies
 function request(method, path, data = null, cookies = '') {
   return new Promise((resolve, reject) => {
     const url = new URL(path, BASE_URL);
@@ -58,7 +56,6 @@ function request(method, path, data = null, cookies = '') {
   });
 }
 
-// Извлечение session_token из cookies
 function extractSessionToken(cookies) {
   for (const cookie of cookies) {
     const match = cookie.match(/session_token=([^;]+)/);
@@ -67,7 +64,6 @@ function extractSessionToken(cookies) {
   return '';
 }
 
-// Ожидание готовности сервера
 async function waitForServer(maxAttempts = 10) {
   for (let i = 0; i < maxAttempts; i++) {
     try {
@@ -80,7 +76,6 @@ async function waitForServer(maxAttempts = 10) {
   throw new Error('Server not ready');
 }
 
-// Тесты
 let testsPassed = 0;
 let testsFailed = 0;
 
@@ -100,7 +95,6 @@ function assert(condition, message) {
   if (!condition) throw new Error(message || 'Assertion failed');
 }
 
-// Восстановление исходных данных
 async function resetUsers() {
   const originalUsers = [
     {
@@ -156,7 +150,6 @@ async function resetUsers() {
 async function runTests() {
   console.log('\n🧪 Запуск тестов авторизации/регистрации\n');
   
-  // Ожидание готовности сервера
   console.log('Ожидание запуска сервера...');
   try {
     await waitForServer();
@@ -166,10 +159,8 @@ async function runTests() {
     process.exit(1);
   }
   
-  // Сброс данных перед тестами
   await resetUsers();
   
-  // === ТЕСТЫ РЕГИСТРАЦИИ ===
   console.log(`${colors.yellow}📝 Регистрация${colors.reset}`);
   
   await test('Регистрация нового пользователя (успешно)', async () => {
@@ -229,7 +220,6 @@ async function runTests() {
     assert(res.data.error.details.errors.length > 0, 'No validation errors');
   });
   
-  // === ТЕСТЫ АВТОРИЗАЦИИ ===
   console.log(`\n${colors.yellow}🔐 Авторизация${colors.reset}`);
   
   await test('Авторизация с правильными данными', async () => {
@@ -274,11 +264,9 @@ async function runTests() {
     assert(res.data.error.code === 'VALIDATION_ERROR', 'Wrong error code');
   });
   
-  // === ТЕСТЫ ПРОВЕРКИ АВТОРИЗАЦИИ ===
   console.log(`\n${colors.yellow}🔍 Проверка авторизации${colors.reset}`);
   
   await test('Проверка авторизации (авторизован)', async () => {
-    // Сначала логинимся
     const loginRes = await request('POST', '/api/auth/login', {
       login: 'petr_petrov',
       password: 'securePass456'
@@ -286,7 +274,6 @@ async function runTests() {
     
     const cookies = extractSessionToken(loginRes.cookies);
     
-    // Проверяем авторизацию
     const res = await request('GET', '/api/auth/me', null, cookies);
     
     assert(res.status === 200, `Expected 200, got ${res.status}`);
@@ -302,11 +289,9 @@ async function runTests() {
     assert(res.data.user === null, 'User should be null');
   });
   
-  // === ТЕСТЫ ВЫХОДА ===
   console.log(`\n${colors.yellow}🚪 Выход из системы${colors.reset}`);
   
   await test('Выход из системы (успешно)', async () => {
-    // Сначала логинимся
     const loginRes = await request('POST', '/api/auth/login', {
       login: 'maria_sid',
       password: 'mariaPass789'
@@ -314,7 +299,6 @@ async function runTests() {
     
     const cookies = extractSessionToken(loginRes.cookies);
     
-    // Выходим
     const res = await request('POST', '/api/auth/logout', null, cookies);
     
     assert(res.status === 200, `Expected 200, got ${res.status}`);
@@ -328,7 +312,6 @@ async function runTests() {
     assert(res.data.error.code === 'UNAUTHORIZED', 'Wrong error code');
   });
   
-  // === HEALTH CHECK ===
   console.log(`\n${colors.yellow}❤️ Health Check${colors.reset}`);
   
   await test('Health check endpoint', async () => {
@@ -338,13 +321,11 @@ async function runTests() {
     assert(res.data.status === 'ok', 'Expected status: ok');
   });
   
-  // === ИТОГИ ===
   console.log('\n' + '='.repeat(50));
   console.log(`${colors.green}Пройдено: ${testsPassed}${colors.reset}`);
   console.log(`${colors.red}Провалено: ${testsFailed}${colors.reset}`);
   console.log('='.repeat(50) + '\n');
   
-  // Восстановление исходных данных
   await resetUsers();
   
   process.exit(testsFailed > 0 ? 1 : 0);

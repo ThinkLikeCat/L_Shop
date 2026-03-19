@@ -1,7 +1,3 @@
-/**
- * Middleware для валидации данных
- * @param {Function} validator - Функция валидации
- */
 function validateMiddleware(validator) {
   return (req, res, next) => {
     const validation = validator(req.body);

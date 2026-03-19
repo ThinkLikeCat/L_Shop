@@ -1,6 +1,3 @@
-/**
- * Middleware для обработки ошибок
- */
 function errorHandler(err, req, res, next) {
   console.error('Error:', err);
 
@@ -18,9 +15,6 @@ function errorHandler(err, req, res, next) {
   });
 }
 
-/**
- * Класс для создания кастомных ошибок
- */
 class AppError extends Error {
   constructor(message, code, statusCode = 400, details = {}) {
     super(message);

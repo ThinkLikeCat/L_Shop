@@ -5,7 +5,7 @@ module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
   session: {
     secret: process.env.SESSION_SECRET || 'default_secret',
-    lifetime: parseInt(process.env.SESSION_LIFETIME) || 600000, // 10 минут
+    lifetime: parseInt(process.env.SESSION_LIFETIME) || 600000,
     cookieName: process.env.COOKIE_NAME || 'session_token'
   },
   data: {

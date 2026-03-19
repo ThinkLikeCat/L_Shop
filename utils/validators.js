@@ -1,56 +1,26 @@
-/**
- * Валидация email
- * @param {string} email - Email для проверки
- * @returns {boolean} - true если email валиден
- */
 function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-/**
- * Валидация номера телефона (российский формат)
- * @param {string} phone - Телефон для проверки
- * @returns {boolean} - true если телефон валиден
- */
 function isValidPhone(phone) {
   const phoneRegex = /^\+?[1-9]\d{10,14}$/;
   return phoneRegex.test(phone.replace(/\s/g, ''));
 }
 
-/**
- * Валидация пароля (минимум 6 символов)
- * @param {string} password - Пароль для проверки
- * @returns {boolean} - true если пароль валиден
- */
 function isValidPassword(password) {
   return password && password.length >= 6;
 }
 
-/**
- * Валидация логина (3-20 символов, буквы, цифры, подчеркивание)
- * @param {string} login - Логин для проверки
- * @returns {boolean} - true если логин валиден
- */
 function isValidLogin(login) {
   const loginRegex = /^[a-zA-Z0-9_]{3,20}$/;
   return loginRegex.test(login);
 }
 
-/**
- * Валидация имени пользователя
- * @param {string} name - Имя для проверки
- * @returns {boolean} - true если имя валидно
- */
 function isValidName(name) {
   return name && name.trim().length >= 2 && name.trim().length <= 100;
 }
 
-/**
- * Валидация данных регистрации
- * @param {object} userData - Данные пользователя
- * @returns {object} - { valid: boolean, errors: string[] }
- */
 function validateRegistration(userData) {
   const errors = [];
   
@@ -80,11 +50,6 @@ function validateRegistration(userData) {
   };
 }
 
-/**
- * Валидация данных входа
- * @param {object} loginData - Данные входа
- * @returns {object} - { valid: boolean, errors: string[] }
- */
 function validateLogin(loginData) {
   const errors = [];
   
@@ -102,11 +67,6 @@ function validateLogin(loginData) {
   };
 }
 
-/**
- * Валидация адреса доставки
- * @param {object} address - Адрес доставки
- * @returns {object} - { valid: boolean, errors: string[] }
- */
 function validateAddress(address) {
   const errors = [];
   
@@ -133,11 +93,6 @@ function validateAddress(address) {
   };
 }
 
-/**
- * Валидация данных заказа
- * @param {object} orderData - Данные заказа
- * @returns {object} - { valid: boolean, errors: string[] }
- */
 function validateOrder(orderData) {
   const errors = [];
   
