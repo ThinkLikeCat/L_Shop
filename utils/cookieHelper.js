@@ -1,10 +1,5 @@
 const config = require('../config/config');
 
-/**
- * Установка cookie с токеном сессии
- * @param {Response} res - Express Response объект
- * @param {string} sessionId - ID сессии
- */
 function setSessionCookie(res, sessionId) {
   res.cookie(config.session.cookieName, sessionId, {
     httpOnly: true,
@@ -15,10 +10,6 @@ function setSessionCookie(res, sessionId) {
   });
 }
 
-/**
- * Удаление cookie сессии
- * @param {Response} res - Express Response объект
- */
 function clearSessionCookie(res) {
   res.clearCookie(config.session.cookieName, {
     httpOnly: true,
@@ -26,11 +17,6 @@ function clearSessionCookie(res) {
   });
 }
 
-/**
- * Получение ID сессии из cookies
- * @param {Request} req - Express Request объект
- * @returns {string|null} - ID сессии или null
- */
 function getSessionId(req) {
   return req.cookies[config.session.cookieName] || null;
 }

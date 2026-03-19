@@ -3,13 +3,9 @@ const FileManager = require('../utils/fileManager');
 const config = require('../config/config');
 
 class AuthService {
-  /**
-   * Регистрация нового пользователя
-   */
   static async register(userData) {
     const { name, email, login, phone, password } = userData;
     
-    // Проверка на существование пользователя
     const existingUser = await FileManager.findOne(
       config.data.usersPath,
       u => u.email === email || u.login === login
@@ -24,7 +20,6 @@ class AuthService {
       }
     }
     
-    // Создание нового пользователя
     const userId = uuidv4();
     const now = new Date().toISOString();
     
@@ -48,9 +43,6 @@ class AuthService {
     return newUser;
   }
   
-  /**
-   * Авторизация пользователя
-   */
   static async login(login, password) {
     const user = await FileManager.findOne(
       config.data.usersPath,
@@ -61,7 +53,6 @@ class AuthService {
       throw { code: 'UNAUTHORIZED', message: 'Неверный логин или пароль', statusCode: 401 };
     }
     
-    // Создание сессии
     const sessionId = uuidv4();
     const sessionExpires = new Date(Date.now() + config.session.lifetime).toISOString();
     
@@ -74,9 +65,6 @@ class AuthService {
     return { user, sessionId };
   }
   
-  /**
-   * Выход из системы
-   */
   static async logout(userId) {
     await FileManager.update(
       config.data.usersPath,
@@ -85,9 +73,6 @@ class AuthService {
     );
   }
   
-  /**
-   * Получение пользователя по sessionId
-   */
   static async getUserBySessionId(sessionId) {
     const user = await FileManager.findOne(
       config.data.usersPath,
@@ -97,9 +82,6 @@ class AuthService {
     return user;
   }
   
-  /**
-   * Получение пользователя по ID
-   */
   static async getUserById(userId) {
     return await FileManager.findOne(
       config.data.usersPath,

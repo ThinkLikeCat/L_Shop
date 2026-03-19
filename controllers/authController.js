@@ -2,9 +2,6 @@ const AuthService = require('../services/authService');
 const { setSessionCookie, clearSessionCookie, getSessionId } = require('../utils/cookieHelper');
 const { validateRegistration, validateLogin } = require('../utils/validators');
 
-/**
- * Регистрация пользователя
- */
 async function register(req, res, next) {
   try {
     const validation = validateRegistration(req.body);
@@ -21,7 +18,6 @@ async function register(req, res, next) {
 
     const user = await AuthService.register(req.body);
     
-    // Создаем сессию для нового пользователя
     const { sessionId } = await AuthService.login(req.body.login, req.body.password);
     setSessionCookie(res, sessionId);
 
@@ -42,9 +38,6 @@ async function register(req, res, next) {
   }
 }
 
-/**
- * Авторизация пользователя
- */
 async function login(req, res, next) {
   try {
     const validation = validateLogin(req.body);
@@ -78,9 +71,6 @@ async function login(req, res, next) {
   }
 }
 
-/**
- * Выход из системы
- */
 async function logout(req, res, next) {
   try {
     if (req.user) {
@@ -97,9 +87,6 @@ async function logout(req, res, next) {
   }
 }
 
-/**
- * Проверка авторизации
- */
 async function me(req, res, next) {
   try {
     const sessionId = getSessionId(req);
