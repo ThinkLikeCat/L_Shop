@@ -1,0 +1,44 @@
+[
+  {
+    "id": "user-001",
+    "name": "Иван Иванов",
+    "email": "ivan@example.com",
+    "login": "ivan_ivanov",
+    "phone": "+79001234567",
+    "password": "password123",
+    "avatar": null,
+    "cartId": null,
+    "sessionId": null,
+    "sessionExpires": null,
+    "createdAt": "2026-03-13T18:00:00.000Z",
+    "updatedAt": "2026-03-13T18:00:00.000Z"
+  },
+  {
+    "id": "user-002",
+    "name": "Петр Петров",
+    "email": "petr@example.com",
+    "login": "petr_petrov",
+    "phone": "+79009876543",
+    "password": "securePass456",
+    "avatar": null,
+    "cartId": null,
+    "sessionId": null,
+    "sessionExpires": null,
+    "createdAt": "2026-03-14T10:30:00.000Z",
+    "updatedAt": "2026-03-14T10:30:00.000Z"
+  },
+  {
+    "id": "user-003",
+    "name": "Мария Сидорова",
+    "email": "maria@example.com",
+    "login": "maria_sid",
+    "phone": "+79005554433",
+    "password": "mariaPass789",
+    "avatar": null,
+    "cartId": null,
+    "sessionId": null,
+    "sessionExpires": null,
+    "createdAt": "2026-03-15T14:20:00.000Z",
+    "updatedAt": "2026-03-15T14:20:00.000Z"
+  }
+]
