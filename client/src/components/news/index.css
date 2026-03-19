@@ -1,0 +1,158 @@
+.news {
+    padding: 80px 0;
+    background-color: #fff;
+}
+
+.news__slider-wrapper {
+    position: relative;
+    padding: 0 40px;
+}
+
+.news__main-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #000;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.news__viewport {
+    width: 100%;
+    overflow: hidden;
+}
+
+.news__grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(25% - 15px);
+    gap: 20px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Карточка */
+.news-card {
+    background-color: #000;
+    border-radius: 12px;
+    height: 460px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Изображение */
+.news-card__image-box {
+    height: 240px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.news-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-card__image-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(to top, #000, transparent);
+}
+
+/* Контент */
+.news-card__info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+.news-card__title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.news-card__text {
+    font-size: 13px;
+    opacity: 0.8;
+    line-height: 1.4;
+}
+
+/* Футер */
+.news-card__footer {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Кнопка */
+.news-card__btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.news-card__btn:hover {
+    border-color: #fff;
+}
+
+.news-card__btn:hover svg {
+    transform: translateX(3px);
+}
+
+/* Стрелки */
+.slider-arrow {
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    z-index: 10;
+    padding: 10px;
+    transition: opacity 0.3s;
+}
+
+.slider-arrow--left {
+    left: 0;
+}
+
+.slider-arrow--right {
+    right: 0;
+}
+
+/* 🔥 Точечный фикс для 8-й карточки */
+.news-card--8 .news-card__footer {
+    right: 40px !important; /* подбери 35–45px */
+}
+.news-card {
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.news-card:hover .news-card__btn {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.15);
+}
