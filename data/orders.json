@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1773502853018",
+    "userId": "test-user",
+    "items": [],
+    "deliveryAddress": {
+      "city": "??????",
+      "street": "???????",
+      "house": "10",
+      "apartment": "25",
+      "postalCode": "123456"
+    },
+    "phone": "+79001234567",
+    "email": "ivan@example.com",
+    "deliveryDate": "2026-03-20",
+    "deliveryTime": "10:00-14:00",
+    "comment": "Комментарий",
+    "paymentMethod": "card",
+    "status": "cancelled",
+    "paymentStatus": "pending",
+    "totalPrice": 25980,
+    "trackingNumber": "",
+    "createdAt": "2026-03-14T15:40:53.018Z",
+    "updatedAt": "2026-03-14T15:42:22.923Z"
+  }
+]
