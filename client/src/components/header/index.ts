@@ -1,11 +1,16 @@
+import './index.css';
+import { WatchesModal } from './okno'; 
+
 export class Header {
+    private watchesModal = new WatchesModal();
+
     render(): string {
         return `
             <header class="header">
                 <div class="container header__container">
                     <nav class="header__nav">
                         <ul class="header__menu">
-                            <li><a href="/watches" data-link>ЧАСЫ</a></li>
+                            <li><button class="header__menu-btn" id="open-watches">ЧАСЫ</button></li>
                             <li><a href="/collections" data-link>КОЛЛЕКЦИИ</a></li>
                             <li><a href="/services" data-link>УСЛУГИ</a></li>
                         </ul>
@@ -29,7 +34,27 @@ export class Header {
                         </button>
                     </div>
                 </div>
+                ${this.watchesModal.render()} 
             </header>
         `;
+    }
+
+    init(): void {
+        const btn = document.getElementById('open-watches');
+        const modal = document.getElementById('watches-modal');
+        const overlay = document.getElementById('menu-overlay');
+
+        if (!btn || !modal || !overlay) return;
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
     }
 }

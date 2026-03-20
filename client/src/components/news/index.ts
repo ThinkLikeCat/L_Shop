@@ -15,7 +15,7 @@ export class NewsSection {
             title: "Hamilton x Resident Evill",
             text: "В честь выхода новой части Resident Evill компания Hamilton представляет новые часы в ограниченной серии.",
             date: "15.03.2026",
-            img: "/images/Hamilton x Resident Evill.png"
+            img: "/images/Resident.png"
         },
         {
             id: 2,

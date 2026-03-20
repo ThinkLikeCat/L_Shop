@@ -6,17 +6,14 @@ export class InfaSection {
             <section class="infa">
                 <div class="container">
 
-                    <!-- Заголовок -->
                     <h2 class="infa__title">Швейцарские часы</h2>
 
-                    <!-- Первый абзац -->
                     <p class="infa__text">
                         Часы – незаменимый атрибут деловых людей. Аксессуар помогает выразить индивидуальность,
                         а также подчеркнуть собственный статус и стиль. Лучше всего с этой задачей справляются
                         швейцарские часы, которые вы можете приобрести в нашем магазине.
                     </p>
 
-                    <!-- Блок 1: фото слева, текст справа -->
                     <div class="infa__row">
                         <img src="/images/Opisanie1.png" alt="Описание 1" class="infa__img-left">
 
@@ -28,7 +25,6 @@ export class InfaSection {
                         </p>
                     </div>
 
-                    <!-- Блок 2: текст слева, фото справа -->
                     <div class="infa__row">
                         <p class="infa__text">
                             В каталоге часов представлены швейцарские бренды, которые заслужили доверие миллионов
@@ -40,7 +36,6 @@ export class InfaSection {
                         <img src="/images/Opisanie2.png" alt="Описание 2" class="infa__img-right">
                     </div>
 
-                    <!-- Финальный абзац -->
                     <p class="infa__text">
                         Компания Royal Seconds – официальный представитель швейцарских часов в Республике Беларусь.
                         У нас вы можете купить швейцарские часы в Минске через розничные магазины или интернет-магазин.
@@ -48,7 +43,6 @@ export class InfaSection {
                         от производителя. Для вашего удобства мы предоставляем бесплатную доставку по Минску и по всей Беларуси.
                     </p>
 
-                    <!-- Фото Jack Heuer по центру -->
                     <div class="infa__center-img-box">
                         <img src="/images/JackHeuer.png" alt="Jack Heuer" class="infa__center-img">
                     </div>

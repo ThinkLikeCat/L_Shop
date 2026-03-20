@@ -30,7 +30,6 @@
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Карточка */
 .news-card {
     background-color: #000;
     border-radius: 12px;
@@ -41,7 +40,6 @@
     position: relative;
 }
 
-/* Изображение */
 .news-card__image-box {
     height: 240px;
     flex-shrink: 0;
@@ -64,7 +62,6 @@
     background: linear-gradient(to top, #000, transparent);
 }
 
-/* Контент */
 .news-card__info {
     padding: 20px;
     flex: 1;
@@ -86,7 +83,6 @@
     line-height: 1.4;
 }
 
-/* Футер */
 .news-card__footer {
     position: absolute;
     right: 20px;
@@ -95,7 +91,6 @@
     justify-content: flex-end;
 }
 
-/* Кнопка */
 .news-card__btn {
     width: 36px;
     height: 36px;
@@ -117,7 +112,6 @@
     transform: translateX(3px);
 }
 
-/* Стрелки */
 .slider-arrow {
     position: absolute;
     top: 60%;
@@ -139,9 +133,8 @@
     right: 0;
 }
 
-/* 🔥 Точечный фикс для 8-й карточки */
 .news-card--8 .news-card__footer {
-    right: 40px !important; /* подбери 35–45px */
+    right: 40px !important; 
 }
 .news-card {
     transition: transform 0.35s ease, box-shadow 0.35s ease;
