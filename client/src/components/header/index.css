@@ -14,6 +14,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .header__nav, 
@@ -25,13 +26,31 @@
     display: flex;
     list-style: none;
     gap: 35px;
+    align-items: center;
 }
 
-.header__menu a {
+.header__menu a, 
+.header__menu-btn,
+.header__menu-item {
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    color: #000;
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-family: inherit;
+}
+
+
+.header__menu a:hover,
+.header__menu-btn:hover,
+.header__menu-item:hover {
+    color: #C29C04; 
 }
 
 .header__logo {
@@ -45,6 +64,7 @@
     font-size: 32px;
     color: #000;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .logo-text .accent {
@@ -61,6 +81,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
     transition: transform 0.2s ease;
 }
 
@@ -77,4 +101,8 @@
 .header__icon-btn.user-btn img {
     width: 26px;
     height: 26px;
+}
+
+.header__menu-btn {
+    outline: none;
 }

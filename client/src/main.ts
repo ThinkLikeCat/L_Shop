@@ -13,7 +13,8 @@ import './components/infa/index.css';
 import './components/footer/index.css';
 
 import './pages/registration/index.css';
-import './pages/trash/index.css'; 
+import './pages/trash/index.css';
+import './pages/delivery/index.css';
 
 import { Header } from './components/header/index';
 import { VideoBanner } from './components/videobanner/index';
@@ -27,15 +28,13 @@ import { InfaSection } from './components/infa/index';
 import { Footer } from './components/footer/index';
 
 import { RegistrationPage } from './pages/registration/index';
-import { BasketPage } from './pages/trash/index'; 
+import { BasketPage, BasketStore } from './pages/trash/index';
+import { DeliveryPage } from './pages/delivery/index';
 
 const app = document.getElementById('app');
 
 if (app) {
     const header = new Header();
-    const registrationPage = new RegistrationPage();
-    const basketPage = new BasketPage(); 
-    
     const videoBanner = new VideoBanner();
     const features = new Features();
     const categories = new Categories();
@@ -46,10 +45,16 @@ if (app) {
     const infaSection = new InfaSection();
     const footer = new Footer();
 
+    const registrationPage = new RegistrationPage();
+    const basketPage = new BasketPage();
+    const deliveryPage = new DeliveryPage();
+
+    const mainContentId = 'main-content';
+
     const renderHome = () => {
         app.innerHTML = `
             ${header.render()}
-            <main id="main-content">
+            <main id="${mainContentId}">
                 ${videoBanner.render()}
                 ${features.render()}
                 ${categories.render()}
@@ -58,59 +63,87 @@ if (app) {
                 ${hamilton.render()}
                 ${newsSection.render()}
                 ${infaSection.render()}
-                ${footer.render()}
             </main>
+            ${footer.render()}
         `;
-        
+
         header.init();
         videoBanner.init();
         tagHeuer.init();
         newsSection.initSlider();
+        
         if ((hamilton as any).init) (hamilton as any).init();
         if ((productsGrid as any).afterRender) (productsGrid as any).afterRender();
 
-        initNavigation(); 
+        productsGrid.init((product) => {
+            BasketStore.push({
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                image: product.img
+            });
+            renderBasket(); 
+        });
+
+        initHeaderNavigation();
     };
 
-    const initNavigation = () => {
-        const mainContent = document.getElementById('main-content');
-        if (!mainContent) return;
-
-        const userBtn = document.querySelector('[data-registration]');
-        userBtn?.addEventListener('click', (e) => {
-            e.preventDefault();
-            mainContent.innerHTML = registrationPage.render();
+    const renderRegistration = () => {
+        const main = document.getElementById(mainContentId);
+        if (main) {
+            main.innerHTML = registrationPage.render();
             registrationPage.init();
             window.history.pushState({}, '', '/registration');
             window.scrollTo(0, 0);
-        });
-
-        const cartBtn = document.getElementById('open-cart');
-        cartBtn?.addEventListener('click', (e) => {
-            e.preventDefault();
-            mainContent.innerHTML = basketPage.render();
-            basketPage.init();
-            window.history.pushState({}, '', '/basket');
-            window.scrollTo(0, 0);
-        });
+        }
     };
 
-    renderHome();
+    const renderBasket = () => {
+        const main = document.getElementById(mainContentId);
+        if (main) {
+            main.innerHTML = basketPage.render();
+            basketPage.init(() => renderDelivery());
+            window.history.pushState({}, '', '/basket');
+            window.scrollTo(0, 0);
+        }
+    };
 
+    const renderDelivery = () => {
+        const main = document.getElementById(mainContentId);
+        if (main) {
+            main.innerHTML = deliveryPage.render();
+
+            deliveryPage.init(() => renderRegistration());
+            
+            window.history.pushState({}, '', '/delivery');
+            window.scrollTo(0, 0);
+        }
+    };
+
+    const initHeaderNavigation = () => {
+        document.getElementById('open-cart')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            renderBasket();
+        });
+
+        document.querySelector('[data-registration]')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            renderRegistration();
+        });
+        
+        document.querySelector('.logo-text')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            renderHome();
+            window.history.pushState({}, '', '/');
+        });
+    };
+    renderHome();
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
-        const mainContent = document.getElementById('main-content');
-        if (!mainContent) return;
-
-        if (path === '/registration') {
-            mainContent.innerHTML = registrationPage.render();
-            registrationPage.init();
-        } else if (path === '/basket') {
-            mainContent.innerHTML = basketPage.render();
-            basketPage.init();
-        } else {
-            renderHome();
-        }
+        if (path === '/registration') renderRegistration();
+        else if (path === '/basket') renderBasket();
+        else if (path === '/delivery') renderDelivery();
+        else renderHome();
     });
 
 } else {
