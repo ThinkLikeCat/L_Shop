@@ -1,0 +1,33 @@
+.features {
+    width: 100%;
+    background-color: #F7F7F7; 
+    padding: 60px 0; 
+}
+.features__container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 30px;
+}
+.features__item {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+}
+.features__icon {
+    width: 40px; 
+    height: 40px;
+    object-fit: contain;
+}
+.features__text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400; 
+    font-size: 14px;
+    color: #909090;
+    white-space: nowrap;
+}
+@media (max-width: 1440px) {
+    .features__container {
+        padding: 0 40px;
+    }
+}
