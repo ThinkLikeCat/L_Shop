@@ -1,0 +1,16 @@
+[
+  {
+    "id": "5e7ee2e3-73f5-419d-a97f-02393d6fc664",
+    "name": "Test User",
+    "email": "test@test.com",
+    "login": "testuser",
+    "phone": "+79001234567",
+    "password": "password123",
+    "avatar": null,
+    "cartId": null,
+    "sessionId": "9a420e6a-9ddb-4b20-95e5-94395c568952",
+    "sessionExpires": "2026-03-20T18:32:12.036Z",
+    "createdAt": "2026-03-20T18:22:01.180Z",
+    "updatedAt": "2026-03-20T18:22:01.180Z"
+  }
+]

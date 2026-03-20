@@ -1,0 +1,50 @@
+[
+  {
+    "id": "cat-sport",
+    "name": "Спортивные часы",
+    "slug": "sport",
+    "parentId": null,
+    "description": "Часы для активного образа жизни и спорта",
+    "image": "/images/cat-sport.jpg",
+    "sortOrder": 1,
+    "isActive": true,
+    "createdAt": "2026-03-01T08:00:00.000Z",
+    "updatedAt": "2026-03-01T08:00:00.000Z"
+  },
+  {
+    "id": "cat-classic",
+    "name": "Классические часы",
+    "slug": "classic",
+    "parentId": null,
+    "description": "Элегантные часы для делового стиля",
+    "image": "/images/cat-classic.jpg",
+    "sortOrder": 2,
+    "isActive": true,
+    "createdAt": "2026-03-01T08:00:00.000Z",
+    "updatedAt": "2026-03-01T08:00:00.000Z"
+  },
+  {
+    "id": "cat-smart",
+    "name": "Умные часы",
+    "slug": "smart",
+    "parentId": null,
+    "description": "Смарт-часы и фитнес-браслеты",
+    "image": "/images/cat-smart.jpg",
+    "sortOrder": 3,
+    "isActive": true,
+    "createdAt": "2026-03-01T08:00:00.000Z",
+    "updatedAt": "2026-03-01T08:00:00.000Z"
+  },
+  {
+    "id": "cat-luxury",
+    "name": "Люкс часы",
+    "slug": "luxury",
+    "parentId": null,
+    "description": "Премиальные часы от ведущих брендов",
+    "image": "/images/cat-luxury.jpg",
+    "sortOrder": 4,
+    "isActive": true,
+    "createdAt": "2026-03-01T08:00:00.000Z",
+    "updatedAt": "2026-03-01T08:00:00.000Z"
+  }
+]

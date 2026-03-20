@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1773502853018",
+    "userId": "test-user",
+    "items": [],
+    "deliveryAddress": {
+      "city": "??????",
+      "street": "???????",
+      "house": "10",
+      "apartment": "25",
+      "postalCode": "123456"
+    },
+    "phone": "+79001234567",
+    "email": "ivan@example.com",
+    "deliveryDate": "2026-03-20",
+    "deliveryTime": "10:00-14:00",
+    "comment": "Комментарий",
+    "paymentMethod": "card",
+    "status": "cancelled",
+    "paymentStatus": "pending",
+    "totalPrice": 25980,
+    "trackingNumber": "",
+    "createdAt": "2026-03-14T15:40:53.018Z",
+    "updatedAt": "2026-03-14T15:42:22.923Z"
+  },
+  {
+    "id": "1774030984563",
+    "userId": "5e7ee2e3-73f5-419d-a97f-02393d6fc664",
+    "items": [
+      {
+        "productId": "a3f1c2b8-9d4e-4e2a-8c1f-2b7e9f1a4d11",
+        "productName": "Casio G-Shock GA-2100",
+        "quantity": 2,
+        "price": 12990,
+        "image": "/images/gshock-ga2100.jpg"
+      }
+    ],
+    "deliveryAddress": {
+      "city": "Москва",
+      "street": "Тестовая",
+      "house": "1",
+      "apartment": "10"
+    },
+    "phone": "+79001234567",
+    "email": "test@test.com",
+    "deliveryDate": "2026-03-25",
+    "deliveryTime": "10:00-14:00",
+    "comment": "",
+    "status": "pending",
+    "paymentStatus": "pending",
+    "paymentMethod": "card",
+    "totalPrice": 25980,
+    "trackingNumber": "",
+    "createdAt": "2026-03-20T18:23:04.563Z",
+    "updatedAt": "2026-03-20T18:23:04.563Z"
+  }
+]
