@@ -1,52 +1,69 @@
-# 🛒 L_Shop - Система авторизации
+# 🛒 L_Shop - Интернет-магазин
 
 ## 📋 Описание проекта
 
-L_Shop - система авторизации пользователей с регистрацией, входом в систему и управлением сессиями через HttpOnly cookies.
+L_Shop - полнофункциональный интернет-магазин с системой авторизации, каталогом товаров, корзиной и оформлением доставки. Бэкенд написан на TypeScript с использованием Express.js.
 
 ## 🏗️ Структура проекта
 
 ```
 L_Shop/
-├── server.js                 # Точка входа сервера
-├── package.json              # Зависимости проекта
+├── package.json              # Зависимости корневого проекта
+├── PROJECT_STRUCTURE_REPORT.md # Отчет о структуре проекта
 ├── README.md                 # Документация
-├── .env                      # Переменные окружения
 │
-├── config/
-│   └── config.js             # Конфигурация сервера
-│
-├── controllers/
-│   └── authController.js     # Контроллер авторизации
-│
-├── middlewares/
-│   ├── authMiddleware.js     # Проверка авторизации
-│   ├── errorHandler.js       # Обработка ошибок
-│   └── validateMiddleware.js # Валидация данных
-│
-├── models/
-│   ├── User.js               # Модель пользователя
-│   ├── Product.js            # Модель товара
-│   ├── Cart.js               # Модель корзины
-│   ├── Order.js              # Модель заказа
-│   └── Category.js           # Модель категории
-│
-├── routes/
-│   └── authRoutes.js         # Маршруты авторизации
-│
-├── services/
-│   └── authService.js        # Сервис авторизации
-│
-├── utils/
-│   ├── fileManager.js        # Работа с JSON файлами
-│   ├── cookieHelper.js       # Работа с cookies
-│   └── validators.js         # Валидаторы данных
-│
-├── data/
-│   └── users.json            # Данные пользователей
-│
-└── tests/
-    └── auth.test.js          # Тесты авторизации
+└── backend/                  # Backend на TypeScript
+    ├── package.json          # Зависимости backend
+    ├── tsconfig.json         # Конфигурация TypeScript
+    ├── jest.config.js        # Конфигурация тестов
+    ├── start.js              # Точка входа (компилированный JS)
+    │
+    ├── data/                 # Хранение данных (JSON)
+    │   ├── users.json        # Пользователи
+    │   ├── products.json     # Товары
+    │   ├── carts.json        # Корзины
+    │   ├── orders.json       # Заказы
+    │   └── categories.json   # Категории
+    │
+    └── src/
+        ├── server.ts         # Точка входа сервера
+        │
+        ├── config/
+        │   └── config.ts     # Конфигурация сервера
+        │
+        ├── controllers/
+        │   ├── authController.ts     # Авторизация
+        │   ├── cartController.ts     # Корзина
+        │   ├── deliveryController.ts # Доставка
+        │   └── productController.ts  # Товары
+        │
+        ├── middlewares/
+        │   ├── authMiddleware.ts  # Проверка авторизации
+        │   └── errorHandler.ts    # Обработка ошибок
+        │
+        ├── models/
+        │   ├── User.ts       # Модель пользователя
+        │   ├── Product.ts     # Модель товара
+        │   ├── Cart.ts        # Модель корзины
+        │   ├── Order.ts       # Модель заказа
+        │   └── Category.ts    # Модель категории
+        │
+        ├── routes/
+        │   ├── authRoutes.ts     # Маршруты авторизации
+        │   ├── cartRoutes.ts     # Маршруты корзины
+        │   ├── deliveryRoutes.ts # Маршруты доставки
+        │   └── productRoutes.ts  # Маршруты товаров
+        │
+        ├── services/
+        │   ├── authService.ts    # Сервис авторизации
+        │   ├── cartService.ts    # Сервис корзины
+        │   ├── deliveryService.ts # Сервис доставки
+        │   └── productService.ts  # Сервис товаров
+        │
+        └── utils/
+            ├── fileManager.ts    # Работа с JSON файлами
+            ├── cookieHelper.ts   # Работа с cookies
+            └── validators.ts     # Валидаторы данных
 ```
 
 ---
@@ -56,15 +73,16 @@ L_Shop/
 ```bash
 # Установка зависимостей
 npm install
+cd backend && npm install
 
 # Запуск в режиме разработки
-npm run dev
+cd backend && npm run dev
+
+# Сборка TypeScript
+cd backend && npm run build
 
 # Запуск в продакшн режиме
-npm start
-
-# Запуск тестов
-node tests/auth.test.js
+cd backend && npm start
 ```
 
 ---
@@ -96,22 +114,6 @@ POST /api/auth/register
 }
 ```
 
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Пользователь успешно зарегистрирован",
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com",
-    "login": "ivan_ivanov",
-    "phone": "+79001234567",
-    "createdAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
 **Особенности:**
 - Создает HttpOnly cookie с токеном сессии
 - Время жизни cookie: 10 минут
@@ -132,21 +134,6 @@ POST /api/auth/login
 }
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Авторизация успешна",
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com",
-    "login": "ivan_ivanov",
-    "phone": "+79001234567"
-  }
-}
-```
-
 ---
 
 ### Выход из системы
@@ -156,14 +143,6 @@ POST /api/auth/logout
 
 **Требует авторизации:** ✅
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Вы успешно вышли из системы"
-}
-```
-
 ---
 
 ### Проверка авторизации
@@ -171,47 +150,122 @@ POST /api/auth/logout
 GET /api/auth/me
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "authenticated": true,
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com"
-  }
-}
+---
+
+## 📦 Товары (`/api/products`)
+
+### Получить список товаров
+```
+GET /api/products
+```
+
+**Query параметры:**
+- `search` - поиск по названию/описанию
+- `category` - фильтр по категории
+- `minPrice` - минимальная цена
+- `maxPrice` - максимальная цена
+- `inStock` - только в наличии (true/false)
+- `sort` - сортировка (price_asc, price_desc, name, rating)
+- `page` - страница (по умолчанию 1)
+- `limit` - товаров на странице (по умолчанию 10)
+
+---
+
+### Получить товар по ID
+```
+GET /api/products/:id
 ```
 
 ---
 
-## 👤 Пользователи (`/api/users`)
+## 🛒 Корзина (`/api/cart`)
 
-### Получить профиль пользователя
+**Все маршруты требуют авторизации** ✅
+
+### Получить корзину
 ```
-GET /api/users/profile
+GET /api/cart
 ```
 
-**Требует авторизации:** ✅
+### Добавить товар в корзину
+```
+POST /api/cart/items
+```
 
-**Response (200):**
+**Request Body:**
 ```json
 {
-  "success": true,
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com",
-    "login": "ivan_ivanov"
-  }
+  "productId": "uuid-string",
+  "quantity": 2
 }
+```
+
+### Изменить количество товара
+```
+PUT /api/cart/items/:productId
+```
+
+**Request Body:**
+```json
+{
+  "quantity": 3
+}
+```
+
+### Удалить товар из корзины
+```
+DELETE /api/cart/items/:productId
+```
+
+### Очистить корзину
+```
+DELETE /api/cart
 ```
 
 ---
 
-## 📝 Модель пользователя
+## 🚚 Доставка (`/api/delivery`)
 
+**Все маршруты требуют авторизации** ✅
+
+### Создать заказ
+```
+POST /api/delivery
+```
+
+**Request Body:**
+```json
+{
+  "deliveryAddress": {
+    "city": "Москва",
+    "street": "ул. Пушкина",
+    "house": "10",
+    "apartment": "25"
+  },
+  "phone": "+79001234567",
+  "email": "ivan@example.com",
+  "deliveryDate": "2026-03-20",
+  "deliveryTime": "10:00-14:00",
+  "comment": "Позвонить перед доставкой",
+  "paymentMethod": "card"
+}
+```
+
+### Получить заказы пользователя
+```
+GET /api/delivery
+```
+
+### Получить заказ по ID
+```
+GET /api/delivery/:id
+```
+
+---
+
+## 📝 Модели данных
+
+### User (Пользователь)
 ```typescript
 interface User {
   id: string;                    // UUID
@@ -219,7 +273,7 @@ interface User {
   email: string;                 // Email (уникальный)
   login: string;                 // Логин (уникальный)
   phone: string;                 // Телефон
-  password: string;              // Пароль
+  password: string;              // Пароль (хешированный)
   avatar?: string;               // URL аватара
   cartId?: string;               // ID активной корзины
   sessionId: string;             // ID сессии
@@ -243,7 +297,7 @@ interface Product {
   isActive: boolean;             // Активен ли товар
   rating: number;                // Рейтинг (1-5)
   reviewsCount: number;          // Количество отзывов
-  characteristics: object;       // Характеристики
+  characteristics: Record<string, unknown>;  // Характеристики
   tags: string[];                // Теги для поиска
   createdAt: Date;
   updatedAt: Date;
@@ -262,14 +316,6 @@ interface Cart {
   isActive: boolean;             // Активная корзина
   createdAt: Date;
   updatedAt: Date;
-}
-
-interface CartItem {
-  id: string;                    // UUID
-  cartId: string;                // ID корзины
-  productId: string;             // ID товара
-  quantity: number;              // Количество
-  price: number;                 // Цена за количество
 }
 ```
 
@@ -306,8 +352,7 @@ interface Order {
   "success": false,
   "error": {
     "code": "ERROR_CODE",
-    "message": "Описание ошибки",
-    "details": {}
+    "message": "Описание ошибки"
   }
 }
 ```
@@ -323,11 +368,12 @@ interface Order {
 | `DUPLICATE_ENTRY` | 409 | Дублирование данных |
 | `SESSION_EXPIRED` | 401 | Сессия истекла |
 | `OUT_OF_STOCK` | 400 | Товар закончился |
-| `PAYMENT_FAILED` | 402 | Ошибка оплаты |
 
 ---
 
-## 🔧 Переменные окружения (.env)
+## 🔧 Переменные окружения
+
+Создайте файл `.env` в папке `backend/`:
 
 ```env
 PORT=3000
@@ -339,12 +385,13 @@ COOKIE_NAME=session_token
 
 ---
 
-## 📌 Примечания
+## 📌 Особенности реализации
 
-1. **Сессии**: Используются HttpOnly cookies для безопасности. Сессия истекает через 10 минут.
-2. **Валидация**: Все входящие данные валидируются перед обработкой.
-3. **Хранение**: Данные хранятся в JSON файлах в папке `/data`.
-4. **Типизация**: Используется JSDoc/TSDoc для документирования типов.
+1. **TypeScript** - полная типизация без использования `any`
+2. **HttpOnly Cookies** - безопасное хранение сессий (не доступны через document.cookie)
+3. **Сессия 10 минут** - автоматическое разлогинивание по истечении времени
+4. **JSON хранилище** - данные хранятся в JSON файлах
+5. **Query параметры** - поддержка фильтрации, сортировки и пагинации
 
 ---
 
