@@ -12,58 +12,91 @@ L_Shop/
 ├── PROJECT_STRUCTURE_REPORT.md # Отчет о структуре проекта
 ├── README.md                 # Документация
 │
-└── backend/                  # Backend на TypeScript
-    ├── package.json          # Зависимости backend
-    ├── tsconfig.json         # Конфигурация TypeScript
-    ├── jest.config.js        # Конфигурация тестов
-    ├── start.js              # Точка входа (компилированный JS)
+├── backend/                  # Backend на TypeScript
+│   ├── package.json          # Зависимости backend
+│   ├── tsconfig.json         # Конфигурация TypeScript
+│   ├── jest.config.js        # Конфигурация тестов
+│   ├── start.js              # Точка входа (компилированный JS)
+│   │
+│   ├── data/                 # Хранение данных (JSON)
+│   │   ├── users.json        # Пользователи
+│   │   ├── products.json     # Товары
+│   │   ├── carts.json        # Корзины
+│   │   ├── orders.json       # Заказы
+│   │   └── categories.json   # Категории
+│   │
+│   └── src/
+│       ├── server.ts         # Точка входа сервера
+│       │
+│       ├── config/
+│       │   └── config.ts     # Конфигурация сервера
+│       │
+│       ├── controllers/
+│       │   ├── authController.ts     # Авторизация
+│       │   ├── cartController.ts     # Корзина
+│       │   ├── deliveryController.ts # Доставка
+│       │   └── productController.ts  # Товары
+│       │
+│       ├── middlewares/
+│       │   ├── authMiddleware.ts  # Проверка авторизации
+│       │   └── errorHandler.ts    # Обработка ошибок
+│       │
+│       ├── models/
+│       │   ├── User.ts       # Модель пользователя
+│       │   ├── Product.ts     # Модель товара
+│       │   ├── Cart.ts        # Модель корзины
+│       │   ├── Order.ts       # Модель заказа
+│       │   └── Category.ts    # Модель категории
+│       │
+│       ├── routes/
+│       │   ├── authRoutes.ts     # Маршруты авторизации
+│       │   ├── cartRoutes.ts     # Маршруты корзины
+│       │   ├── deliveryRoutes.ts # Маршруты доставки
+│       │   └── productRoutes.ts  # Маршруты товаров
+│       │
+│       ├── services/
+│       │   ├── authService.ts    # Сервис авторизации
+│       │   ├── cartService.ts    # Сервис корзины
+│       │   ├── deliveryService.ts # Сервис доставки
+│       │   └── productService.ts  # Сервис товаров
+│       │
+│       └── utils/
+│           ├── fileManager.ts    # Работа с JSON файлами
+│           ├── cookieHelper.ts   # Работа с cookies
+│           └── validators.ts     # Валидаторы данных
+│
+└── client/                   # Frontend на TypeScript (Vite)
+    ├── index.html            # Точка входа HTML
+    ├── package.json          # Зависимости client
+    ├── vite.config.ts        # Конфигурация Vite
     │
-    ├── data/                 # Хранение данных (JSON)
-    │   ├── users.json        # Пользователи
-    │   ├── products.json     # Товары
-    │   ├── carts.json        # Корзины
-    │   ├── orders.json       # Заказы
-    │   └── categories.json   # Категории
+    ├── public/               # Статические ресурсы
+    │   ├── images/           # Изображения (баннеры, логотипы, товары)
+    │   └── video/            # Видеофайлы
     │
     └── src/
-        ├── server.ts         # Точка входа сервера
+        ├── main.ts           # Точка входа TypeScript
+        ├── style.css         # Глобальные стили
         │
-        ├── config/
-        │   └── config.ts     # Конфигурация сервера
+        ├── api/
+        │   └── product.ts    # API для работы с товарами
         │
-        ├── controllers/
-        │   ├── authController.ts     # Авторизация
-        │   ├── cartController.ts     # Корзина
-        │   ├── deliveryController.ts # Доставка
-        │   └── productController.ts  # Товары
+        ├── components/       # Компоненты интерфейса
+        │   ├── categories/   # Категории товаров
+        │   ├── features/     # Преимущества
+        │   ├── footer/       # Подвал сайта
+        │   ├── hamilton/     # Блок Hamilton
+        │   ├── header/       # Шапка сайта
+        │   ├── infa/         # Информационный блок
+        │   ├── news/         # Новинки
+        │   ├── products/     # Карточки товаров
+        │   ├── tag-heuer/    # Блок Tag Heuer
+        │   └── videobanner/  # Видеобаннер
         │
-        ├── middlewares/
-        │   ├── authMiddleware.ts  # Проверка авторизации
-        │   └── errorHandler.ts    # Обработка ошибок
-        │
-        ├── models/
-        │   ├── User.ts       # Модель пользователя
-        │   ├── Product.ts     # Модель товара
-        │   ├── Cart.ts        # Модель корзины
-        │   ├── Order.ts       # Модель заказа
-        │   └── Category.ts    # Модель категории
-        │
-        ├── routes/
-        │   ├── authRoutes.ts     # Маршруты авторизации
-        │   ├── cartRoutes.ts     # Маршруты корзины
-        │   ├── deliveryRoutes.ts # Маршруты доставки
-        │   └── productRoutes.ts  # Маршруты товаров
-        │
-        ├── services/
-        │   ├── authService.ts    # Сервис авторизации
-        │   ├── cartService.ts    # Сервис корзины
-        │   ├── deliveryService.ts # Сервис доставки
-        │   └── productService.ts  # Сервис товаров
-        │
-        └── utils/
-            ├── fileManager.ts    # Работа с JSON файлами
-            ├── cookieHelper.ts   # Работа с cookies
-            └── validators.ts     # Валидаторы данных
+        └── pages/            # Страницы приложения
+            ├── home/         # Главная страница
+            ├── registration/ # Регистрация/Авторизация
+            └── trash/        # Корзина
 ```
 
 ---
@@ -395,7 +428,12 @@ COOKIE_NAME=session_token
 
 ---
 
-## 👨‍💻 Автор
+## 👨‍💻 Команда разработки
 
-Разработано в рамках учебного проекта L_Shop.
-Тимлид: Зыбайло М.Д.
+Проект разработан группой **Т-394**
+
+| Роль | Разработчик |
+|------|-------------|
+| 🎯 Тимлид | Зыбайло Михаил |
+| 🎨 Frontend | Вольфович Арсений |
+| ⚙️ Backend | Коляда Антоний, Охременко Дмитрий |
