@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import path from 'path';
 import { config } from './config/config';
 import { errorHandler } from './middlewares/errorHandler';
 
@@ -32,12 +33,18 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// 404 handler
-app.use((_req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Маршрут не найден'
-  });
+// Статические файлы клиента (собранный фронтенд)
+const clientDistPath = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientDistPath));
+
+// SPA fallback - отдаём index.html для всех не-API и не-статических маршрутов
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+  // Пропускаем API маршруты
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  // Отдаём index.html для SPA
+  res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
 // Error handler

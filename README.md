@@ -103,19 +103,134 @@ L_Shop/
 
 ## 🚀 Установка и запуск
 
+### 📋 Предварительные требования
+
+- **Node.js** >= 16.x
+- **npm** >= 8.x
+
+### 📦 Установка зависимостей
+
 ```bash
-# Установка зависимостей
+# Установка зависимостей в корневой папке (для TypeScript и общих инструментов)
 npm install
+
+# Установка зависимостей backend
 cd backend && npm install
 
-# Запуск в режиме разработки
-cd backend && npm run dev
+# Установка зависимостей client
+cd ../client && npm install
+```
 
-# Сборка TypeScript
-cd backend && npm run build
+---
 
-# Запуск в продакшн режиме
-cd backend && npm start
+## 🖥️ Запуск проекта
+
+### ⚡ Быстрый старт (режим разработки)
+
+Откройте **два терминала** и выполните команды в указанном порядке:
+
+#### Терминал 1 — Backend API (порт 3001)
+
+```bash
+# Из корневой папки проекта
+d:\L_Shop\node_modules\.bin\tsc -p d:\L_Shop\backend\tsconfig.json && node d:\L_Shop\backend\dist\server.js
+```
+
+После запуска вы увидите:
+```
+🚀 Сервер запущен на порту 3001
+📁 Режим: development
+⏰ Время жизни сессии: 10 минут
+```
+
+#### Терминал 2 — Frontend (порт 3000)
+
+```bash
+cd client
+npm run dev
+```
+
+После запуска Vite откроет браузер автоматически по адресу http://localhost:3000
+
+---
+
+### 🌐 Адреса серверов
+
+| Сервис | Порт | URL | Что открывается |
+|--------|------|-----|------------------|
+| **Frontend (Vite)** | 3000 | `http://localhost:3000` | Главная страница магазина |
+| **Backend API** | 3001 | `http://localhost:3001` | REST API сервер |
+| **Health Check** | 3001 | `http://localhost:3001/api/health` | Проверка состояния сервера |
+| **Products API** | 3001 | `http://localhost:3001/api/products` | Список товаров (JSON) |
+
+---
+
+### 📋 Порядок запуска
+
+1. **Сначала запустите Backend** (порт 3001) — сервер должен показать сообщение о запуске
+2. **Затем запустите Frontend** (порт 3000) — Vite автоматически откроет браузер
+3. **Проверьте связь** — откройте http://localhost:3001/api/health, должно вернуть `{"status":"ok"}`
+
+---
+
+### 🔧 Альтернативные способы запуска
+
+#### Backend через npm скрипты (если настроены)
+
+```bash
+cd backend
+
+# Компиляция TypeScript
+npm run build
+
+# Запуск скомпилированного сервера
+npm start
+
+# Или через ts-node напрямую (требуется глобальная установка)
+npx ts-node src/server.ts
+```
+
+#### Frontend
+
+```bash
+cd client
+
+# Режим разработки
+npm run dev
+
+# Сборка для продакшн
+npm run build
+
+# Превью собранного проекта
+npm run preview
+```
+
+---
+
+### 🔧 Продакшн режим
+
+```bash
+# Сборка и запуск backend
+cd backend
+npm run build        # Компиляция TypeScript в dist/
+npm start            # Запуск скомпилированного сервера
+
+# Сборка frontend
+cd client
+npm run build        # Сборка в dist/
+npm run preview      # Превью собранного проекта
+```
+
+---
+
+## 📡 API Proxy
+
+В режиме разработки Vite проксирует запросы `/api/*` на backend сервер:
+
+```
+Frontend: http://localhost:3000/api/products
+    ↓ (proxy)
+Backend:  http://localhost:3001/api/products
 ```
 
 ---
@@ -124,7 +239,7 @@ cd backend && npm start
 
 ### Базовый URL
 ```
-http://localhost:3000/api
+http://localhost:3001
 ```
 
 ---
@@ -409,7 +524,7 @@ interface Order {
 Создайте файл `.env` в папке `backend/`:
 
 ```env
-PORT=3000
+PORT=3001
 NODE_ENV=development
 SESSION_SECRET=your-secret-key
 SESSION_LIFETIME=600000

@@ -1,6 +1,10 @@
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '../../.env') });
+
+// Базовый путь к данным (относительно скомпилированного файла в dist/config/)
+const dataDir = path.join(__dirname, '../../data');
 
 export interface Config {
   port: number;
@@ -28,10 +32,10 @@ export const config: Config = {
     cookieName: process.env.COOKIE_NAME ?? 'session_token'
   },
   data: {
-    usersPath: '../data/users.json',
-    productsPath: '../data/products.json',
-    cartsPath: '../data/carts.json',
-    ordersPath: '../data/orders.json',
-    categoriesPath: '../data/categories.json'
+    usersPath: path.join(dataDir, 'users.json'),
+    productsPath: path.join(dataDir, 'products.json'),
+    cartsPath: path.join(dataDir, 'carts.json'),
+    ordersPath: path.join(dataDir, 'orders.json'),
+    categoriesPath: path.join(dataDir, 'categories.json')
   }
 };
