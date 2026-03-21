@@ -56,14 +56,19 @@ export class RegistrationPage {
 
     public init(): void {
         const form = document.getElementById('registration-form') as HTMLFormElement | null;
+        const emailInput = document.getElementById('reg-email') as HTMLInputElement;
+
+        const savedEmail = localStorage.getItem('pendingEmail');
+        if (savedEmail && emailInput) {
+            emailInput.value = savedEmail;
+            localStorage.removeItem('pendingEmail');
+        }
         
         if (!form) return;
 
         form.addEventListener('submit', (event: Event) => {
             event.preventDefault();
-            
             const formData = new FormData(form);
-            
             const password = formData.get('password') as string;
             const confirm = formData.get('confirm') as string;
 

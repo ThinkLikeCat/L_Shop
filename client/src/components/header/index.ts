@@ -11,8 +11,9 @@ export class Header {
                     <nav class="header__nav">
                         <ul class="header__menu">
                             <li><button class="header__menu-btn" id="open-watches">ЧАСЫ</button></li>
-                            <li><a href="/collections" data-link>КОЛЛЕКЦИИ</a></li>
-                            <li><a href="/services" data-link>УСЛУГИ</a></li>
+                            <!-- Заменили ссылки на span с общим классом -->
+                            <li><span class="header__menu-item">КОЛЛЕКЦИИ</span></li>
+                            <li><span class="header__menu-item">УСЛУГИ</span></li>
                         </ul>
                     </nav>
 
