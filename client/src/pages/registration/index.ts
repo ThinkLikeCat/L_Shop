@@ -1,10 +1,32 @@
 import './index.css';
+import { authApi, type User } from '../../api/index';
 
 interface IRegistrationData {
     name: string;
     email: string;
+    login: string;
     phone: string;
-    password?: string; 
+    password: string;
+}
+
+// Глобальное состояние авторизации
+export let currentUser: User | null = null;
+
+export function getCurrentUser(): User | null {
+    return currentUser;
+}
+
+export async function checkAuth(): Promise<boolean> {
+    const response = await authApi.me();
+    if (response.success && response.data) {
+        const data = response.data as { user?: User; authenticated?: boolean };
+        if (data.authenticated && data.user) {
+            currentUser = data.user;
+            return true;
+        }
+    }
+    currentUser = null;
+    return false;
 }
 
 export class RegistrationPage {
@@ -30,6 +52,11 @@ export class RegistrationPage {
                             <div class="form-group">
                                 <label for="reg-phone">Номер телефона</label>
                                 <input type="tel" id="reg-phone" name="phone" placeholder="+375 (__) ___-__-__" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="reg-login">Логин</label>
+                                <input type="text" id="reg-login" name="login" placeholder="ivan_ivanov" required>
                             </div>
                             
                             <div class="form-group">
@@ -66,7 +93,7 @@ export class RegistrationPage {
         
         if (!form) return;
 
-        form.addEventListener('submit', (event: Event) => {
+        form.addEventListener('submit', async (event: Event) => {
             event.preventDefault();
             const formData = new FormData(form);
             const password = formData.get('password') as string;
@@ -80,11 +107,39 @@ export class RegistrationPage {
             const userData: IRegistrationData = {
                 name: formData.get('name') as string,
                 email: formData.get('email') as string,
+                login: formData.get('login') as string,
                 phone: formData.get('phone') as string,
+                password: password,
             };
 
-            console.log("Регистрация пользователя:", userData);
-            alert(`Добро пожаловать, ${userData.name}!`);
+            // Отправка на backend
+            const submitBtn = form.querySelector('.registration-btn') as HTMLButtonElement;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Регистрация...';
+            }
+
+            try {
+                const response = await authApi.register(userData);
+                
+                if (response.success && response.data) {
+                    const responseData = response.data as { user?: User; message?: string };
+                    currentUser = responseData.user || null;
+                    alert(`Добро пожаловать, ${userData.name}!`);
+                    window.history.pushState({}, '', '/');
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                } else {
+                    alert(response.message || 'Ошибка регистрации');
+                }
+            } catch (error) {
+                console.error("Ошибка регистрации:", error);
+                alert('Произошла ошибка при регистрации');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Зарегистрироваться';
+                }
+            }
         });
     }
 }

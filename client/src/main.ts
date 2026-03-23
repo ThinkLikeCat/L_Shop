@@ -28,8 +28,8 @@ import { NewsSection } from './components/news/index';
 import { InfaSection } from './components/infa/index';
 import { Footer } from './components/footer/index';
 
-import { RegistrationPage } from './pages/registration/index';
-import { BasketPage, BasketStore } from './pages/trash/index';
+import { RegistrationPage, checkAuth } from './pages/registration/index';
+import { BasketPage, BasketStore, addToCart, getCartItems } from './pages/trash/index';
 import { DeliveryPage } from './pages/delivery/index';
 import { LoginPage } from './pages/login/index';
 
@@ -78,9 +78,13 @@ if (app) {
         if ((hamilton as any).init) (hamilton as any).init();
         if ((productsGrid as any).afterRender) (productsGrid as any).afterRender();
 
-        productsGrid.init((product) => {
-            BasketStore.push({
-                id: product.id, title: product.title, price: product.price, image: product.img
+        productsGrid.init(async (product) => {
+            // Добавляем товар через API
+            await addToCart({
+                id: String(product.id),
+                title: product.title,
+                price: product.price,
+                image: product.img
             });
             renderBasket(); 
         });
@@ -107,9 +111,11 @@ if (app) {
         }
     };
 
-    const renderBasket = () => {
+    const renderBasket = async () => {
         const main = document.getElementById(mainContentId);
         if (main) {
+            // Загружаем данные корзины перед рендерингом
+            await basketPage.loadData();
             main.innerHTML = basketPage.render();
             basketPage.init(() => renderDelivery());
             window.history.pushState({}, '', '/basket');
@@ -145,7 +151,19 @@ if (app) {
         });
     };
 
-    renderHome();
+    // Инициализация приложения
+    const initApp = async () => {
+        // Проверяем авторизацию при загрузке
+        await checkAuth();
+        
+        // Загружаем корзину с сервера если авторизован
+        await getCartItems();
+        
+        // Рендерим главную страницу
+        renderHome();
+    };
+
+    initApp();
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
         if (path === '/registration') renderRegistration();

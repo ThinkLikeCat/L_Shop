@@ -12,5 +12,19 @@
     "sessionExpires": "2026-03-20T18:32:12.036Z",
     "createdAt": "2026-03-20T18:22:01.180Z",
     "updatedAt": "2026-03-20T18:22:01.180Z"
+  },
+  {
+    "id": "b1838217-bb3f-4d33-b127-90c0a3d6e5b6",
+    "name": "Pi di di",
+    "email": "example@gmail.com",
+    "login": "dsadasd_da",
+    "phone": "+32133213213123",
+    "password": "2wvAiuUqjD&XS;F",
+    "avatar": null,
+    "cartId": null,
+    "sessionId": "9a7b2d87-d934-46ee-8421-6bf3c2fe56e6",
+    "sessionExpires": "2026-03-21T06:48:13.558Z",
+    "createdAt": "2026-03-21T06:38:13.537Z",
+    "updatedAt": "2026-03-21T06:38:13.537Z"
   }
 ]

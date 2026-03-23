@@ -4,10 +4,13 @@
   "description": "Интернет-магазин L_Shop",
   "private": true,
   "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run client\"",
     "backend": "cd backend && npm run dev",
     "backend:build": "cd backend && npm run build",
     "backend:start": "cd backend && npm start",
-    "install:all": "cd backend && npm install"
+    "client": "cd client && npm run dev",
+    "client:build": "cd client && npm run build",
+    "install:all": "npm install && cd backend && npm install && cd ../client && npm install"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
@@ -24,6 +27,7 @@
     "@types/node": "^25.5.0",
     "@types/supertest": "^7.2.0",
     "@types/uuid": "^10.0.0",
+    "concurrently": "^9.2.1",
     "jest": "^30.3.0",
     "nodemon": "^3.1.14",
     "supertest": "^7.2.2",

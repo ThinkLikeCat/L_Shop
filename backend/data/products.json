@@ -29,7 +29,7 @@
     "price": 28990,
     "discountPrice": 24990,
     "categoryId": "cat-classic",
-    "images": ["/images/seiko-presage.jpg"],
+    "images": ["D:\\L_Shop\\client\\public\\images\\Hamilton1.png"],
     "stock": 8,
     "isActive": true,
     "rating": 4.9,
