@@ -15,6 +15,7 @@ import './components/footer/index.css';
 import './pages/registration/index.css';
 import './pages/trash/index.css';
 import './pages/delivery/index.css';
+import './pages/login/index.css';
 
 import { Header } from './components/header/index';
 import { VideoBanner } from './components/videobanner/index';
@@ -30,6 +31,7 @@ import { Footer } from './components/footer/index';
 import { RegistrationPage } from './pages/registration/index';
 import { BasketPage, BasketStore } from './pages/trash/index';
 import { DeliveryPage } from './pages/delivery/index';
+import { LoginPage } from './pages/login/index';
 
 const app = document.getElementById('app');
 
@@ -48,6 +50,7 @@ if (app) {
     const registrationPage = new RegistrationPage();
     const basketPage = new BasketPage();
     const deliveryPage = new DeliveryPage();
+    const loginPage = new LoginPage();
 
     const mainContentId = 'main-content';
 
@@ -77,22 +80,28 @@ if (app) {
 
         productsGrid.init((product) => {
             BasketStore.push({
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                image: product.img
+                id: product.id, title: product.title, price: product.price, image: product.img
             });
             renderBasket(); 
         });
 
         initHeaderNavigation();
     };
+    const renderLogin = () => {
+        const main = document.getElementById(mainContentId);
+        if (main) {
+            main.innerHTML = loginPage.render();
+            loginPage.init(() => renderRegistration());
+            window.history.pushState({}, '', '/login');
+            window.scrollTo(0, 0);
+        }
+    };
 
     const renderRegistration = () => {
         const main = document.getElementById(mainContentId);
         if (main) {
             main.innerHTML = registrationPage.render();
-            registrationPage.init();
+            registrationPage.init(); 
             window.history.pushState({}, '', '/registration');
             window.scrollTo(0, 0);
         }
@@ -112,9 +121,7 @@ if (app) {
         const main = document.getElementById(mainContentId);
         if (main) {
             main.innerHTML = deliveryPage.render();
-
             deliveryPage.init(() => renderRegistration());
-            
             window.history.pushState({}, '', '/delivery');
             window.scrollTo(0, 0);
         }
@@ -128,7 +135,7 @@ if (app) {
 
         document.querySelector('[data-registration]')?.addEventListener('click', (e) => {
             e.preventDefault();
-            renderRegistration();
+            renderLogin(); 
         });
         
         document.querySelector('.logo-text')?.addEventListener('click', (e) => {
@@ -137,10 +144,12 @@ if (app) {
             window.history.pushState({}, '', '/');
         });
     };
+
     renderHome();
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
         if (path === '/registration') renderRegistration();
+        else if (path === '/login') renderLogin();
         else if (path === '/basket') renderBasket();
         else if (path === '/delivery') renderDelivery();
         else renderHome();

@@ -1,0 +1,101 @@
+.login-page {
+    min-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fcfcfc;
+    padding: 60px 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 50px 45px;
+    border: 1px solid #eee;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    text-align: center;
+}
+
+.login-title {
+    font-family: 'Italiana', serif;
+    font-size: 34px;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.login-subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 35px;
+}
+
+.login-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    color: #222;
+    font-weight: 700;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid #e0e0e0;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #C29C04;
+    background-color: #fff;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 18px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.login-btn:hover {
+    background-color: #C29C04;
+}
+
+.login-footer {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
+}
+
+.registration-link {
+    color: #C29C04;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 4px;
+    cursor: pointer;
+}
