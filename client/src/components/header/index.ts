@@ -1,17 +1,18 @@
 import './index.css';
 import { WatchesModal } from './okno'; 
+import { SearchOverlay } from './poisk'; 
 
 export class Header {
     private watchesModal = new WatchesModal();
+    private searchOverlay = new SearchOverlay();
 
-    render(): string {
+    public render(): string {
         return `
             <header class="header">
                 <div class="container header__container">
                     <nav class="header__nav">
                         <ul class="header__menu">
                             <li><button class="header__menu-btn" id="open-watches">ЧАСЫ</button></li>
-                            <!-- Заменили ссылки на span с общим классом -->
                             <li><span class="header__menu-item">КОЛЛЕКЦИИ</span></li>
                             <li><span class="header__menu-item">УСЛУГИ</span></li>
                         </ul>
@@ -24,38 +25,57 @@ export class Header {
                     </div>
 
                     <div class="header__actions">
-                        <button class="header__icon-btn">
+                        <button class="header__icon-btn" id="btn-search-open">
                             <img src="/images/Поиск.png" alt="Поиск">
                         </button>
                         <button class="header__icon-btn" id="open-cart">
                             <img src="/images/корзина.png" alt="Корзина">
                         </button>
-                        <button class="header__icon-btn user-btn" data-registration>
+                        <button class="header__icon-btn user-btn" id="login-link" data-registration>
                             <img src="/images/user.png" alt="Профиль">
+                        </button>
+                        <button class="header__icon-btn" id="logout-btn" style="display: none;" title="Выход">
+                            <img src="/images/logout.png" alt="Выход" style="width: 20px;">
                         </button>
                     </div>
                 </div>
                 ${this.watchesModal.render()} 
+                ${this.searchOverlay.render()} 
             </header>
         `;
     }
 
-    init(): void {
-        const btn = document.getElementById('open-watches');
-        const modal = document.getElementById('watches-modal');
-        const overlay = document.getElementById('menu-overlay');
+    public init(onSearch?: (query: string) => void): void {
+        const btnWatches = document.getElementById('open-watches');
+        const modalWatches = document.getElementById('watches-modal');
+        const overlayWatches = document.getElementById('menu-overlay');
 
-        if (!btn || !modal || !overlay) return;
-
-        btn.addEventListener('click', (e) => {
+        btnWatches?.addEventListener('click', (e) => {
             e.preventDefault();
-            modal.classList.toggle('active');
-            overlay.classList.toggle('active');
+            modalWatches?.classList.toggle('active');
+            overlayWatches?.classList.toggle('active');
         });
 
-        overlay.addEventListener('click', () => {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
+        overlayWatches?.addEventListener('click', () => {
+            modalWatches?.classList.remove('active');
+            overlayWatches?.classList.remove('active');
         });
+
+        const btnSearchOpen = document.getElementById('btn-search-open');
+        
+        btnSearchOpen?.addEventListener('click', () => {
+            this.searchOverlay.open();
+        });
+
+        this.searchOverlay.init((query) => {
+            if (onSearch) onSearch(query);
+        });
+    }
+
+    public updateAuthStatus(isLoggedIn: boolean): void {
+        const loginBtn = document.getElementById('login-link');
+        const logoutBtn = document.getElementById('logout-btn');
+        if (loginBtn) loginBtn.style.display = isLoggedIn ? 'none' : 'flex';
+        if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'flex' : 'none';
     }
 }

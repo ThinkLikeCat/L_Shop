@@ -93,12 +93,13 @@ export async function removeFromCart(productId: string): Promise<boolean> {
 
 export class BasketPage {
     private footer = new Footer();
+    private items: ICartItem[] = [];
 
     public render(): string {
         return `
             <div class="basket-page">
-                <div class="container basket-page__content">
-                    ${BasketStore.length === 0 ? this.renderEmpty() : this.renderFull()}
+                <div class="container basket-page__content" id="basket-container">
+                    <p>Загрузка корзины...</p>
                 </div>
                 ${this.footer.render()}
             </div>
@@ -116,7 +117,7 @@ export class BasketPage {
         return `
             <div class="basket-header">
                 <h1 class="basket-title">Корзина</h1>
-                <a href="/" class="back-link" data-link>Вернуться в каталог</a>
+                <a href="/" class="back-link">Вернуться в каталог</a>
             </div>
             <div class="basket-empty">
                 <div class="basket-empty__icon">
@@ -124,32 +125,41 @@ export class BasketPage {
                 </div>
                 <h2 class="basket-empty__title">Ваша корзина пуста</h2>
                 <p class="basket-empty__text">
-                    Нажмите <a href="/" data-link>здесь</a>, чтобы продолжить покупки
+                    Нажмите <a href="/">здесь</a>, чтобы продолжить покупки
                 </p>
             </div>
         `;
     }
 
     private renderFull(): string {
+        const totalPrice = this.items.reduce((acc, item) => {
+            return acc + (item.product.price * item.count);
+        }, 0);
+
         return `
             <div class="basket-header">
                 <h1 class="basket-title">Корзина</h1>
-                <a href="/" class="back-link" data-link>Вернуться в каталог</a>
+                <a href="/" class="back-link">Вернуться в каталог</a>
             </div>
             <div class="basket-layout">
                 <div class="basket-main">
                     <div class="basket-tabs"><span class="tab-active">Товары в корзине</span></div>
                     <div class="basket-list">
-                        ${BasketStore.map(item => `
+                        ${this.items.map(item => `
                             <div class="basket-item">
-                                <div class="item-pic"><img src="${item.image}"></div>
+                                <div class="item-pic"><img src="${item.product.images[0]}"></div>
                                 <div class="item-info">
-                                    <h3 class="item-name" data-title="basket">${item.title}</h3>
-                                    <p class="item-meta">Артикул: ${item.id}</p>
+                                    <h3 class="item-name" data-title="basket">${item.product.name}</h3>
+                                    <p class="item-meta">Артикул: ${item.product.id.substring(0, 8)}</p>
+                                    <div class="item-count">
+                                        <button class="count-btn" data-id="${item.product.id}" data-action="minus">-</button>
+                                        <span>${item.count}</span>
+                                        <button class="count-btn" data-id="${item.product.id}" data-action="plus">+</button>
+                                    </div>
                                 </div>
                                 <div class="item-actions">
-                                    <span class="current-price" data-price="basket">${item.price}</span>
-                                    <button class="item-del" data-id="${item.id}">✕</button>
+                                    <span class="current-price" data-price="basket">${(item.product.price * item.count).toLocaleString()} руб.</span>
+                                    <button class="item-del" data-id="${item.product.id}">✕</button>
                                 </div>
                             </div>
                         `).join('')}
@@ -159,7 +169,7 @@ export class BasketPage {
                     <div class="total-card">
                         <div class="total-row">
                             <span>Итого:</span>
-                            <span class="total-val">${BasketStore[0].price}</span>
+                            <span class="total-val">${totalPrice.toLocaleString()} руб.</span>
                         </div>
                         <button class="checkout-btn" id="to-checkout">Перейти к оформлению</button>
                     </div>
@@ -168,12 +178,24 @@ export class BasketPage {
         `;
     }
 
-    public init(onNavigateToDelivery: () => void): void {
-        document.getElementById('to-checkout')?.addEventListener('click', () => {
-            onNavigateToDelivery();
-        });
+    public async init(onNavigateToDelivery: () => void): Promise<void> {
+        const container = document.getElementById('basket-container');
+        try {
+            const data = await CartAPI.getCart();
+            if (data.success) {
+                this.items = data.cart.basket;
+                if (container) container.innerHTML = this.renderContent();
+            }
+        } catch (e) {
+            console.error("Ошибка загрузки корзины", e);
+        }
+        this.setupEventListeners(onNavigateToDelivery);
+    }
 
+    private setupEventListeners(onNavigateToDelivery: () => void): void {
+        const container = document.getElementById('basket-container');
 
+        document.getElementById('to-checkout')?.addEventListener('click', onNavigateToDelivery);
         document.querySelectorAll('.item-del').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 const productId = (e.target as HTMLElement).dataset.id;
