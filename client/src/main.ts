@@ -20,7 +20,9 @@ import { VideoBanner } from './components/videobanner/index';
 import { ProductsGrid } from './components/products/index';
 import { Footer } from './components/footer/index';
 
-import { RegistrationPage } from './pages/registration/index';
+import { RegistrationPage, checkAuth } from './pages/registration/index';
+import { BasketPage, BasketStore, addToCart, getCartItems } from './pages/trash/index';
+import { DeliveryPage } from './pages/delivery/index';
 import { LoginPage } from './pages/login/index';
 import { BasketPage } from './pages/trash/index';
 import { DeliveryPage } from './pages/delivery/index';
@@ -60,15 +62,16 @@ if (app) {
         header.updateAuthStatus(!!currentUser);
         setupNavigationListeners();
 
-        await productsGrid.init(onBuyHandler, filters);
-    };
-
-    const onBuyHandler = async (product: any) => {
-        if (!currentUser) {
-            alert("Пожалуйста, войдите в систему для совершения покупок");
-            renderLogin();
-            return;
-        }
+        productsGrid.init(async (product) => {
+            // Добавляем товар через API
+            await addToCart({
+                id: String(product.id),
+                title: product.title,
+                price: product.price,
+                image: product.img
+            });
+            renderBasket(); 
+        });
 
         try {
             const res = await CartAPI.add(product.id, 1);
@@ -96,11 +99,12 @@ if (app) {
             window.history.pushState({}, '', '/registration');
         }
     };
+
     const renderBasket = async () => {
-        if (!currentUser) return renderLogin();
-        
         const main = document.getElementById(mainContentId);
         if (main) {
+            // Загружаем данные корзины перед рендерингом
+            await basketPage.loadData();
             main.innerHTML = basketPage.render();
             await basketPage.init(() => renderDelivery());
             window.history.pushState({}, '', '/basket');
@@ -146,9 +150,20 @@ if (app) {
         });
     };
 
+    // Инициализация приложения
     const initApp = async () => {
-        currentUser = await checkAuth();
+        // Проверяем авторизацию при загрузке
+        await checkAuth();
         
+        // Загружаем корзину с сервера если авторизован
+        await getCartItems();
+        
+        // Рендерим главную страницу
+        renderHome();
+    };
+
+    initApp();
+    window.addEventListener('popstate', () => {
         const path = window.location.pathname;
         if (path !== '/') {
             app.innerHTML = `

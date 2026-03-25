@@ -2,78 +2,235 @@
 
 ## 📋 Описание проекта
 
-L_Shop - это полнофункциональный бэкенд для интернет-магазина с системой регистрации пользователей, каталогом товаров, корзиной и оформлением доставки.
+L_Shop - полнофункциональный интернет-магазин с системой авторизации, каталогом товаров, корзиной и оформлением доставки. Бэкенд написан на TypeScript с использованием Express.js.
 
 ## 🏗️ Структура проекта
 
 ```
 L_Shop/
-├── server.js                 # Точка входа сервера
-├── package.json              # Зависимости проекта
+├── package.json              # Зависимости корневого проекта
+├── PROJECT_STRUCTURE_REPORT.md # Отчет о структуре проекта
 ├── README.md                 # Документация
-├── .env                      # Переменные окружения
 │
-├── config/
-│   └── config.js             # Конфигурация сервера
+├── backend/                  # Backend на TypeScript
+│   ├── package.json          # Зависимости backend
+│   ├── tsconfig.json         # Конфигурация TypeScript
+│   ├── jest.config.js        # Конфигурация тестов
+│   ├── start.js              # Точка входа (компилированный JS)
+│   │
+│   ├── data/                 # Хранение данных (JSON)
+│   │   ├── users.json        # Пользователи
+│   │   ├── products.json     # Товары
+│   │   ├── carts.json        # Корзины
+│   │   ├── orders.json       # Заказы
+│   │   └── categories.json   # Категории
+│   │
+│   └── src/
+│       ├── server.ts         # Точка входа сервера
+│       │
+│       ├── config/
+│       │   └── config.ts     # Конфигурация сервера
+│       │
+│       ├── controllers/
+│       │   ├── authController.ts     # Авторизация
+│       │   ├── cartController.ts     # Корзина
+│       │   ├── deliveryController.ts # Доставка
+│       │   └── productController.ts  # Товары
+│       │
+│       ├── middlewares/
+│       │   ├── authMiddleware.ts  # Проверка авторизации
+│       │   └── errorHandler.ts    # Обработка ошибок
+│       │
+│       ├── models/
+│       │   ├── User.ts       # Модель пользователя
+│       │   ├── Product.ts     # Модель товара
+│       │   ├── Cart.ts        # Модель корзины
+│       │   ├── Order.ts       # Модель заказа
+│       │   └── Category.ts    # Модель категории
+│       │
+│       ├── routes/
+│       │   ├── authRoutes.ts     # Маршруты авторизации
+│       │   ├── cartRoutes.ts     # Маршруты корзины
+│       │   ├── deliveryRoutes.ts # Маршруты доставки
+│       │   └── productRoutes.ts  # Маршруты товаров
+│       │
+│       ├── services/
+│       │   ├── authService.ts    # Сервис авторизации
+│       │   ├── cartService.ts    # Сервис корзины
+│       │   ├── deliveryService.ts # Сервис доставки
+│       │   └── productService.ts  # Сервис товаров
+│       │
+│       └── utils/
+│           ├── fileManager.ts    # Работа с JSON файлами
+│           ├── cookieHelper.ts   # Работа с cookies
+│           └── validators.ts     # Валидаторы данных
 │
-├── controllers/
-│   ├── authController.js     # Контроллер авторизации
-│   ├── userController.js     # Контроллер пользователей
-│   ├── productController.js  # Контроллер товаров
-│   ├── cartController.js     # Контроллер корзины
-│   └── deliveryController.js # Контроллер доставки
-│
-├── middlewares/
-│   ├── authMiddleware.js     # Проверка авторизации
-│   ├── errorHandler.js       # Обработка ошибок
-│   └── validateMiddleware.js # Валидация данных
-│
-├── models/
-│   ├── User.js               # Модель пользователя
-│   ├── Product.js            # Модель товара
-│   ├── Cart.js               # Модель корзины
-│   ├── Order.js              # Модель заказа
-│   └── Category.js           # Модель категории
-│
-├── routes/
-│   ├── authRoutes.js         # Маршруты авторизации
-│   ├── userRoutes.js         # Маршруты пользователей
-│   ├── productRoutes.js      # Маршруты товаров
-│   ├── cartRoutes.js         # Маршруты корзины
-│   └── deliveryRoutes.js     # Маршруты доставки
-│
-├── services/
-│   ├── authService.js        # Сервис авторизации
-│   ├── productService.js     # Сервис товаров
-│   ├── cartService.js        # Сервис корзины
-│   └── deliveryService.js    # Сервис доставки
-│
-├── utils/
-│   ├── fileManager.js        # Работа с JSON файлами
-│   ├── cookieHelper.js       # Работа с cookies
-│   └── validators.js         # Валидаторы данных
-│
-└── data/
-    ├── users.json            # Данные пользователей
-    ├── products.json         # Данные товаров
-    ├── carts.json            # Данные корзин
-    ├── orders.json           # Данные заказов
-    └── categories.json       # Данные категорий
+└── client/                   # Frontend на TypeScript (Vite)
+    ├── index.html            # Точка входа HTML
+    ├── package.json          # Зависимости client
+    ├── vite.config.ts        # Конфигурация Vite
+    │
+    ├── public/               # Статические ресурсы
+    │   ├── images/           # Изображения (баннеры, логотипы, товары)
+    │   └── video/            # Видеофайлы
+    │
+    └── src/
+        ├── main.ts           # Точка входа TypeScript
+        ├── style.css         # Глобальные стили
+        │
+        ├── api/
+        │   └── product.ts    # API для работы с товарами
+        │
+        ├── components/       # Компоненты интерфейса
+        │   ├── categories/   # Категории товаров
+        │   ├── features/     # Преимущества
+        │   ├── footer/       # Подвал сайта
+        │   ├── hamilton/     # Блок Hamilton
+        │   ├── header/       # Шапка сайта
+        │   ├── infa/         # Информационный блок
+        │   ├── news/         # Новинки
+        │   ├── products/     # Карточки товаров
+        │   ├── tag-heuer/    # Блок Tag Heuer
+        │   └── videobanner/  # Видеобаннер
+        │
+        └── pages/            # Страницы приложения
+            ├── home/         # Главная страница
+            ├── registration/ # Регистрация/Авторизация
+            └── trash/        # Корзина
 ```
 
 ---
 
 ## 🚀 Установка и запуск
 
+### 📋 Предварительные требования
+
+- **Node.js** >= 16.x
+- **npm** >= 8.x
+
+### 📦 Установка зависимостей
+
 ```bash
-# Установка зависимостей
+# Установка зависимостей в корневой папке (для TypeScript и общих инструментов)
 npm install
 
-# Запуск в режиме разработки
+# Установка зависимостей backend
+cd backend && npm install
+
+# Установка зависимостей client
+cd ../client && npm install
+```
+
+---
+
+## 🖥️ Запуск проекта
+
+### ⚡ Быстрый старт (режим разработки)
+
+Откройте **два терминала** и выполните команды в указанном порядке:
+
+#### Терминал 1 — Backend API (порт 3001)
+
+```bash
+# Из корневой папки проекта
+d:\L_Shop\node_modules\.bin\tsc -p d:\L_Shop\backend\tsconfig.json && node d:\L_Shop\backend\dist\server.js
+```
+
+После запуска вы увидите:
+```
+🚀 Сервер запущен на порту 3001
+📁 Режим: development
+⏰ Время жизни сессии: 10 минут
+```
+
+#### Терминал 2 — Frontend (порт 3000)
+
+```bash
+cd client
+npm run dev
+```
+
+После запуска Vite откроет браузер автоматически по адресу http://localhost:3000
+
+---
+
+### 🌐 Адреса серверов
+
+| Сервис | Порт | URL | Что открывается |
+|--------|------|-----|------------------|
+| **Frontend (Vite)** | 3000 | `http://localhost:3000` | Главная страница магазина |
+| **Backend API** | 3001 | `http://localhost:3001` | REST API сервер |
+| **Health Check** | 3001 | `http://localhost:3001/api/health` | Проверка состояния сервера |
+| **Products API** | 3001 | `http://localhost:3001/api/products` | Список товаров (JSON) |
+
+---
+
+### 📋 Порядок запуска
+
+1. **Сначала запустите Backend** (порт 3001) — сервер должен показать сообщение о запуске
+2. **Затем запустите Frontend** (порт 3000) — Vite автоматически откроет браузер
+3. **Проверьте связь** — откройте http://localhost:3001/api/health, должно вернуть `{"status":"ok"}`
+
+---
+
+### 🔧 Альтернативные способы запуска
+
+#### Backend через npm скрипты (если настроены)
+
+```bash
+cd backend
+
+# Компиляция TypeScript
+npm run build
+
+# Запуск скомпилированного сервера
+npm start
+
+# Или через ts-node напрямую (требуется глобальная установка)
+npx ts-node src/server.ts
+```
+
+#### Frontend
+
+```bash
+cd client
+
+# Режим разработки
 npm run dev
 
-# Запуск в продакшн режиме
-npm start
+# Сборка для продакшн
+npm run build
+
+# Превью собранного проекта
+npm run preview
+```
+
+---
+
+### 🔧 Продакшн режим
+
+```bash
+# Сборка и запуск backend
+cd backend
+npm run build        # Компиляция TypeScript в dist/
+npm start            # Запуск скомпилированного сервера
+
+# Сборка frontend
+cd client
+npm run build        # Сборка в dist/
+npm run preview      # Превью собранного проекта
+```
+
+---
+
+## 📡 API Proxy
+
+В режиме разработки Vite проксирует запросы `/api/*` на backend сервер:
+
+```
+Frontend: http://localhost:3000/api/products
+    ↓ (proxy)
+Backend:  http://localhost:3001/api/products
 ```
 
 ---
@@ -82,7 +239,7 @@ npm start
 
 ### Базовый URL
 ```
-http://localhost:3000/api
+http://localhost:3001
 ```
 
 ---
@@ -102,22 +259,6 @@ POST /api/auth/register
   "login": "ivan_ivanov",
   "phone": "+79001234567",
   "password": "securePassword123"
-}
-```
-
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Пользователь успешно зарегистрирован",
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com",
-    "login": "ivan_ivanov",
-    "phone": "+79001234567",
-    "createdAt": "2026-03-13T18:00:00.000Z"
-  }
 }
 ```
 
@@ -141,21 +282,6 @@ POST /api/auth/login
 }
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Авторизация успешна",
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com",
-    "login": "ivan_ivanov",
-    "phone": "+79001234567"
-  }
-}
-```
-
 ---
 
 ### Выход из системы
@@ -163,90 +289,13 @@ POST /api/auth/login
 POST /api/auth/logout
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Вы успешно вышли из системы"
-}
-```
+**Требует авторизации:** ✅
 
 ---
 
 ### Проверка авторизации
 ```
 GET /api/auth/me
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "authenticated": true,
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com"
-  }
-}
-```
-
----
-
-## 👤 Пользователи (`/api/users`)
-
-### Получить профиль пользователя
-```
-GET /api/users/profile
-```
-
-**Требует авторизации:** ✅
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Иванов",
-    "email": "ivan@example.com",
-    "login": "ivan_ivanov",
-    "phone": "+79001234567",
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "cartId": "cart-uuid",
-    "orders": []
-  }
-}
-```
-
----
-
-### Обновить профиль пользователя
-```
-PUT /api/users/profile
-```
-
-**Требует авторизации:** ✅
-
-**Request Body:**
-```json
-{
-  "name": "Иван Петров",
-  "phone": "+79009876543"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Профиль обновлен",
-  "user": {
-    "id": "uuid-string",
-    "name": "Иван Петров",
-    "phone": "+79009876543"
-  }
-}
 ```
 
 ---
@@ -258,52 +307,15 @@ PUT /api/users/profile
 GET /api/products
 ```
 
-**Query Parameters:**
-| Параметр | Тип | Описание |
-|----------|-----|----------|
-| `search` | string | Поиск по названию/описанию |
-| `category` | string | Фильтр по категории |
-| `minPrice` | number | Минимальная цена |
-| `maxPrice` | number | Максимальная цена |
-| `inStock` | boolean | Только в наличии |
-| `sortBy` | string | Сортировка: `price`, `name`, `createdAt` |
-| `sortOrder` | string | Порядок: `asc`, `desc` |
-| `page` | number | Номер страницы (по умолчанию 1) |
-| `limit` | number | Количество на странице (по умолчанию 20) |
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": {
-    "products": [
-      {
-        "id": "uuid-string",
-        "name": "Смартфон Samsung Galaxy",
-        "description": "Флагманский смартфон",
-        "price": 59990,
-        "discountPrice": 49990,
-        "category": "electronics",
-        "images": ["image1.jpg", "image2.jpg"],
-        "stock": 15,
-        "rating": 4.5,
-        "reviews": 128,
-        "characteristics": {
-          "color": "black",
-          "memory": "256GB"
-        },
-        "createdAt": "2026-03-13T18:00:00.000Z"
-      }
-    ],
-    "pagination": {
-      "currentPage": 1,
-      "totalPages": 5,
-      "totalItems": 100,
-      "itemsPerPage": 20
-    }
-  }
-}
-```
+**Query параметры:**
+- `search` - поиск по названию/описанию
+- `category` - фильтр по категории
+- `minPrice` - минимальная цена
+- `maxPrice` - максимальная цена
+- `inStock` - только в наличии (true/false)
+- `sort` - сортировка (price_asc, price_desc, name, rating)
+- `page` - страница (по умолчанию 1)
+- `limit` - товаров на странице (по умолчанию 10)
 
 ---
 
@@ -312,119 +324,16 @@ GET /api/products
 GET /api/products/:id
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "product": {
-    "id": "uuid-string",
-    "name": "Смартфон Samsung Galaxy",
-    "description": "Флагманский смартфон с лучшими характеристиками",
-    "price": 59990,
-    "discountPrice": 49990,
-    "category": {
-      "id": "cat-uuid",
-      "name": "Электроника",
-      "slug": "electronics"
-    },
-    "images": ["image1.jpg", "image2.jpg"],
-    "stock": 15,
-    "rating": 4.5,
-    "reviews": [
-      {
-        "id": "review-uuid",
-        "userId": "user-uuid",
-        "userName": "Иван",
-        "rating": 5,
-        "comment": "Отличный товар!",
-        "createdAt": "2026-03-13T18:00:00.000Z"
-      }
-    ],
-    "characteristics": {
-      "color": "black",
-      "memory": "256GB",
-      "screen": "6.7 дюймов"
-    },
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "updatedAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Получить категории товаров
-```
-GET /api/products/categories
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "categories": [
-    {
-      "id": "cat-uuid",
-      "name": "Электроника",
-      "slug": "electronics",
-      "icon": "📱",
-      "productCount": 150
-    },
-    {
-      "id": "cat-uuid-2",
-      "name": "Одежда",
-      "slug": "clothing",
-      "icon": "👕",
-      "productCount": 320
-    }
-  ]
-}
-```
-
 ---
 
 ## 🛒 Корзина (`/api/cart`)
 
-> ⚠️ Все эндпоинты корзины требуют авторизации
+**Все маршруты требуют авторизации** ✅
 
-### Получить корзину пользователя
+### Получить корзину
 ```
 GET /api/cart
 ```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "cart": {
-    "id": "cart-uuid",
-    "userId": "user-uuid",
-    "items": [
-      {
-        "id": "item-uuid",
-        "productId": "product-uuid",
-        "product": {
-          "id": "product-uuid",
-          "name": "Смартфон Samsung Galaxy",
-          "price": 59990,
-          "discountPrice": 49990,
-          "images": ["image1.jpg"],
-          "stock": 15
-        },
-        "quantity": 2,
-        "price": 99980
-      }
-    ],
-    "totalItems": 2,
-    "totalPrice": 99980,
-    "discountPrice": 83980,
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "updatedAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
 
 ### Добавить товар в корзину
 ```
@@ -434,30 +343,14 @@ POST /api/cart/items
 **Request Body:**
 ```json
 {
-  "productId": "product-uuid",
+  "productId": "uuid-string",
   "quantity": 2
 }
 ```
 
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Товар добавлен в корзину",
-  "cartItem": {
-    "id": "item-uuid",
-    "productId": "product-uuid",
-    "quantity": 2,
-    "price": 99980
-  }
-}
+### Изменить количество товара
 ```
-
----
-
-### Обновить количество товара в корзине
-```
-PUT /api/cart/items/:itemId
+PUT /api/cart/items/:productId
 ```
 
 **Request Body:**
@@ -467,56 +360,23 @@ PUT /api/cart/items/:itemId
 }
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Количество обновлено",
-  "cartItem": {
-    "id": "item-uuid",
-    "quantity": 3,
-    "price": 149970
-  }
-}
-```
-
----
-
 ### Удалить товар из корзины
 ```
-DELETE /api/cart/items/:itemId
+DELETE /api/cart/items/:productId
 ```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Товар удален из корзины"
-}
-```
-
----
 
 ### Очистить корзину
 ```
 DELETE /api/cart
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Корзина очищена"
-}
-```
-
 ---
 
 ## 🚚 Доставка (`/api/delivery`)
 
-> ⚠️ Все эндпоинты доставки требуют авторизации
+**Все маршруты требуют авторизации** ✅
 
-### Создать заказ на доставку
+### Создать заказ
 ```
 POST /api/delivery
 ```
@@ -524,12 +384,11 @@ POST /api/delivery
 **Request Body:**
 ```json
 {
-  "address": {
+  "deliveryAddress": {
     "city": "Москва",
     "street": "ул. Пушкина",
     "house": "10",
-    "apartment": "25",
-    "postalCode": "123456"
+    "apartment": "25"
   },
   "phone": "+79001234567",
   "email": "ivan@example.com",
@@ -540,170 +399,15 @@ POST /api/delivery
 }
 ```
 
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Заказ успешно оформлен",
-  "order": {
-    "id": "order-uuid",
-    "userId": "user-uuid",
-    "items": [...],
-    "deliveryAddress": {
-      "city": "Москва",
-      "street": "ул. Пушкина",
-      "house": "10",
-      "apartment": "25",
-      "postalCode": "123456"
-    },
-    "phone": "+79001234567",
-    "email": "ivan@example.com",
-    "deliveryDate": "2026-03-20",
-    "deliveryTime": "10:00-14:00",
-    "totalPrice": 99980,
-    "status": "pending",
-    "paymentStatus": "pending",
-    "paymentMethod": "card",
-    "createdAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Получить список заказов пользователя
+### Получить заказы пользователя
 ```
 GET /api/delivery
 ```
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "orders": [
-    {
-      "id": "order-uuid",
-      "items": [
-        {
-          "productId": "product-uuid",
-          "productName": "Смартфон Samsung Galaxy",
-          "quantity": 2,
-          "price": 99980,
-          "image": "image1.jpg"
-        }
-      ],
-      "status": "delivered",
-      "totalPrice": 99980,
-      "deliveryDate": "2026-03-20",
-      "createdAt": "2026-03-13T18:00:00.000Z"
-    }
-  ]
-}
-```
-
----
-
 ### Получить заказ по ID
 ```
-GET /api/delivery/:orderId
+GET /api/delivery/:id
 ```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "order": {
-    "id": "order-uuid",
-    "userId": "user-uuid",
-    "items": [...],
-    "deliveryAddress": {...},
-    "phone": "+79001234567",
-    "email": "ivan@example.com",
-    "status": "processing",
-    "paymentStatus": "paid",
-    "paymentMethod": "card",
-    "totalPrice": 99980,
-    "deliveryDate": "2026-03-20",
-    "deliveryTime": "10:00-14:00",
-    "comment": "Позвонить перед доставкой",
-    "trackingNumber": "TRACK123456",
-    "createdAt": "2026-03-13T18:00:00.000Z",
-    "updatedAt": "2026-03-13T18:00:00.000Z"
-  }
-}
-```
-
----
-
-### Отменить заказ
-```
-PUT /api/delivery/:orderId/cancel
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Заказ отменен",
-  "order": {
-    "id": "order-uuid",
-    "status": "cancelled"
-  }
-}
-```
-
----
-
-### Подтвердить оплату (с капчей)
-```
-POST /api/delivery/:orderId/pay
-```
-
-**Request Body:**
-```json
-{
-  "captchaToken": "captcha-response-token",
-  "cardNumber": "****1234",
-  "cardExpiry": "12/26",
-  "cardCvv": "***"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Оплата успешно проведена",
-  "order": {
-    "id": "order-uuid",
-    "paymentStatus": "paid",
-    "status": "processing"
-  }
-}
-```
-
----
-
-## 📊 Статусы заказа
-
-| Статус | Описание |
-|--------|----------|
-| `pending` | Ожидает оплаты |
-| `processing` | В обработке |
-| `shipped` | Отправлен |
-| `delivered` | Доставлен |
-| `cancelled` | Отменен |
-
----
-
-## 🔒 Статусы оплаты
-
-| Статус | Описание |
-|--------|----------|
-| `pending` | Ожидает оплаты |
-| `paid` | Оплачено |
-| `failed` | Ошибка оплаты |
-| `refunded` | Возврат средств |
 
 ---
 
@@ -717,7 +421,7 @@ interface User {
   email: string;                 // Email (уникальный)
   login: string;                 // Логин (уникальный)
   phone: string;                 // Телефон
-  password: string;              // Хешированный пароль
+  password: string;              // Пароль (хешированный)
   avatar?: string;               // URL аватара
   cartId?: string;               // ID активной корзины
   sessionId: string;             // ID сессии
@@ -741,7 +445,7 @@ interface Product {
   isActive: boolean;             // Активен ли товар
   rating: number;                // Рейтинг (1-5)
   reviewsCount: number;          // Количество отзывов
-  characteristics: object;       // Характеристики
+  characteristics: Record<string, unknown>;  // Характеристики
   tags: string[];                // Теги для поиска
   createdAt: Date;
   updatedAt: Date;
@@ -760,14 +464,6 @@ interface Cart {
   isActive: boolean;             // Активная корзина
   createdAt: Date;
   updatedAt: Date;
-}
-
-interface CartItem {
-  id: string;                    // UUID
-  cartId: string;                // ID корзины
-  productId: string;             // ID товара
-  quantity: number;              // Количество
-  price: number;                 // Цена за количество
 }
 ```
 
@@ -804,8 +500,7 @@ interface Order {
   "success": false,
   "error": {
     "code": "ERROR_CODE",
-    "message": "Описание ошибки",
-    "details": {}
+    "message": "Описание ошибки"
   }
 }
 ```
@@ -821,14 +516,15 @@ interface Order {
 | `DUPLICATE_ENTRY` | 409 | Дублирование данных |
 | `SESSION_EXPIRED` | 401 | Сессия истекла |
 | `OUT_OF_STOCK` | 400 | Товар закончился |
-| `PAYMENT_FAILED` | 402 | Ошибка оплаты |
 
 ---
 
-## 🔧 Переменные окружения (.env)
+## 🔧 Переменные окружения
+
+Создайте файл `.env` в папке `backend/`:
 
 ```env
-PORT=3000
+PORT=3001
 NODE_ENV=development
 SESSION_SECRET=your-secret-key
 SESSION_LIFETIME=600000
@@ -837,16 +533,22 @@ COOKIE_NAME=session_token
 
 ---
 
-## 📌 Примечания
+## 📌 Особенности реализации
 
-1. **Сессии**: Используются HttpOnly cookies для безопасности. Сессия истекает через 10 минут.
-2. **Валидация**: Все входящие данные валидируются перед обработкой.
-3. **Хранение**: Данные хранятся в JSON файлах в папке `/data`.
-4. **Типизация**: Используется JSDoc/TSDoc для документирования типов.
+1. **TypeScript** - полная типизация без использования `any`
+2. **HttpOnly Cookies** - безопасное хранение сессий (не доступны через document.cookie)
+3. **Сессия 10 минут** - автоматическое разлогинивание по истечении времени
+4. **JSON хранилище** - данные хранятся в JSON файлах
+5. **Query параметры** - поддержка фильтрации, сортировки и пагинации
 
 ---
 
-## 👨‍💻 Автор
+## 👨‍💻 Команда разработки
 
-Разработано в рамках учебного проекта L_Shop.
-Тимлид: Зыбайло М.Д.
+Проект разработан группой **Т-394**
+
+| Роль | Разработчик |
+|------|-------------|
+| 🎯 Тимлид | Зыбайло Михаил |
+| 🎨 Frontend | Вольфович Арсений |
+| ⚙️ Backend | Коляда Антоний, Охременко Дмитрий |
