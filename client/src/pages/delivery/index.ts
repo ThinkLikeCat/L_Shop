@@ -82,18 +82,6 @@ export class DeliveryPage {
     }
 
     public init(onGuestClick: () => void): void {
-        const user = getCurrentUser();
-        
-        // Если пользователь авторизован, показываем форму доставки сразу
-        if (user) {
-            this.showStep2();
-        }
-
-        const btnTo2 = document.getElementById('btn-to-step-2');
-        const emailInput = document.getElementById('delivery-email') as HTMLInputElement;
-
-        const steps = ['step-1', 'step-2', 'step-3'];
-
         const goToStep = (stepNum: number) => {
             document.querySelectorAll('.order-step').forEach(s => s.classList.remove('order-step--active'));
             document.getElementById(`step-${stepNum}`)?.classList.add('order-step--active');
@@ -103,66 +91,45 @@ export class DeliveryPage {
         document.getElementById('to-step-3')?.addEventListener('click', () => goToStep(3));
 
         document.getElementById('final-checkout')?.addEventListener('click', async () => {
-            const orderData: IDeliveryRequest = {
-                city: (document.getElementById('order-city') as HTMLInputElement).value,
-                street: (document.getElementById('order-street') as HTMLInputElement).value,
-                house: (document.getElementById('order-house') as HTMLInputElement).value,
-                apartment: (document.getElementById('order-apt') as HTMLInputElement).value,
-                postalCode: (document.getElementById('order-zip') as HTMLInputElement).value,
-                phone: (document.getElementById('order-phone') as HTMLInputElement).value,
-                email: (document.getElementById('order-email') as HTMLInputElement).value,
-                deliveryDate: new Date().toISOString().split('T')[0],
-                deliveryTime: "10:00-18:00",
-                comment: (document.getElementById('order-comment') as HTMLTextAreaElement).value,
-                paymentMethod: (document.getElementById('order-payment') as HTMLSelectElement).value as 'card' | 'cash'
-            };
-
-        const btnTo3 = document.getElementById('btn-to-step-3');
-        const step3 = document.getElementById('step-3');
-        
-        btnTo3?.addEventListener('click', async () => {
-            // Собираем данные формы
-            const city = (document.querySelector('[data-delivery-city]') as HTMLInputElement)?.value;
-            const address = (document.querySelector('[data-delivery-address]') as HTMLInputElement)?.value;
-            
-            if (!city || !address) {
-                alert('Пожалуйста, заполните все поля');
-                return;
-            }
-            
             const user = getCurrentUser();
             if (!user) {
                 alert('Необходимо авторизоваться для оформления заказа');
+                onGuestClick();
                 return;
             }
-            
-            // Рассчитываем общую сумму
-            const totalPrice = BasketStore.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            // Создаем заказ через API
+
+            const city = (document.getElementById('order-city') as HTMLInputElement)?.value;
+            const street = (document.getElementById('order-street') as HTMLInputElement)?.value;
+            const house = (document.getElementById('order-house') as HTMLInputElement)?.value;
+            const apartment = (document.getElementById('order-apt') as HTMLInputElement)?.value;
+            const phone = (document.getElementById('order-phone') as HTMLInputElement)?.value;
+            const email = (document.getElementById('order-email') as HTMLInputElement)?.value;
+            const comment = (document.getElementById('order-comment') as HTMLTextAreaElement)?.value;
+            const paymentMethod = (document.getElementById('order-payment') as HTMLSelectElement)?.value as 'card' | 'cash';
+
+            if (!city || !street || !phone || !email) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
             try {
                 const response = await deliveryApi.createOrder({
                     deliveryAddress: {
                         city: city,
-                        street: address,
-                        house: '',
+                        street: street,
+                        house: house || '',
+                        apartment: apartment || '',
                     },
-                    phone: user.phone || '',
-                    email: user.email || '',
-                    deliveryDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // +3 дня
+                    phone: phone,
+                    email: email,
+                    deliveryDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                     deliveryTime: '10:00-18:00',
-                    paymentMethod: 'card',
+                    comment: comment || undefined,
+                    paymentMethod: paymentMethod || 'card',
                 });
-                
+
                 if (response.success) {
-                    step3?.classList.add('order-step--active');
-                    
-                    // Очищаем корзину
-                    BasketStore.length = 0;
-                    
                     alert('Заказ успешно сформирован! Спасибо за выбор RoyalSeconds.');
-                    
-                    // Перенаправляем на главную
                     window.history.pushState({}, '', '/');
                     window.dispatchEvent(new PopStateEvent('popstate'));
                 } else {
@@ -173,15 +140,5 @@ export class DeliveryPage {
                 alert('Произошла ошибка при оформлении заказа');
             }
         });
-    }
-    
-    private showStep2(): void {
-        const step2 = document.getElementById('step-2');
-        const formContainer = document.getElementById('delivery-form-container');
-        const step1 = document.getElementById('step-1');
-        
-        step1?.classList.remove('order-step--active');
-        step2?.classList.add('order-step--active');
-        formContainer?.classList.remove('hidden');
     }
 }

@@ -43,7 +43,7 @@ export interface CartItem {
 export interface Cart {
   id: string;
   userId: string;
-  items: CartItem[];
+  basket: CartItem[];
   totalItems: number;
   totalPrice: number;
   discountPrice: number;

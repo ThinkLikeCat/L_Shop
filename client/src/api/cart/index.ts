@@ -5,6 +5,7 @@ export interface ICartItem {
     product: IProduct;
 }
 
+
 export interface ICartResponse {
     success: boolean;
     cart: {
