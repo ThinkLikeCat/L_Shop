@@ -1,34 +1,58 @@
 import { Router } from 'express';
 import * as deliveryController from '../controllers/deliveryController';
 import { authMiddleware } from '../middlewares/authMiddleware';
-
 const router = Router();
-
-// Все маршруты доставки требуют авторизации
 router.use(authMiddleware);
-
 /**
- * @route GET /api/delivery
- * @description Получить все заказы пользователя
+ * @swagger
+ * {
+ * "/api/delivery": {
+ * "get": {
+ * "summary": "Получить все заказы пользователя",
+ * "tags": ["Delivery"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/', deliveryController.getOrders);
-
 /**
- * @route GET /api/delivery/:id
- * @description Получить заказ по ID
+ * @swagger
+ * {
+ * "/api/delivery/{id}": {
+ * "get": {
+ * "summary": "Получить заказ по ID",
+ * "tags": ["Delivery"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/:id', deliveryController.getOrderById);
-
 /**
- * @route POST /api/delivery
- * @description Создать новый заказ
+ * @swagger
+ * {
+ * "/api/delivery": {
+ * "post": {
+ * "summary": "Создать новый заказ",
+ * "tags": ["Delivery"],
+ * "responses": { "201": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.post('/', deliveryController.createOrder);
-
 /**
- * @route PUT /api/delivery/:id/cancel
- * @description Отменить заказ
+ * @swagger
+ * {
+ * "/api/delivery/{id}/cancel": {
+ * "put": {
+ * "summary": "Отменить заказ",
+ * "tags": ["Delivery"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.put('/:id/cancel', deliveryController.cancelOrder);
-
 export default router;

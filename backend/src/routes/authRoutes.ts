@@ -1,31 +1,65 @@
 import { Router } from 'express';
 import * as authController from '../controllers/authController';
 import { authMiddleware } from '../middlewares/authMiddleware';
-
 const router = Router();
-
 /**
- * @route POST /api/auth/register
- * @description Регистрация нового пользователя
+ * @swagger
+ * {
+ * "/api/auth/register": {
+ * "post": {
+ * "summary": "Регистрация нового пользователя",
+ * "tags": ["Auth"],
+ * "responses": {
+ * "200": { "description": "Успешно" }
+ * }
+ * }
+ * }
+ * }
  */
 router.post('/register', authController.register);
-
 /**
- * @route POST /api/auth/login
- * @description Авторизация пользователя
+ * @swagger
+ * {
+ * "/api/auth/login": {
+ * "post": {
+ * "summary": "Авторизация пользователя",
+ * "tags": ["Auth"],
+ * "responses": {
+ * "200": { "description": "Успешно" }
+ * }
+ * }
+ * }
+ * }
  */
 router.post('/login', authController.login);
-
 /**
- * @route POST /api/auth/logout
- * @description Выход из системы
+ * @swagger
+ * {
+ * "/api/auth/logout": {
+ * "post": {
+ * "summary": "Выход из системы",
+ * "tags": ["Auth"],
+ * "responses": {
+ * "200": { "description": "Успешно" }
+ * }
+ * }
+ * }
+ * }
  */
 router.post('/logout', authMiddleware, authController.logout);
-
 /**
- * @route GET /api/auth/me
- * @description Получение текущего пользователя
+ * @swagger
+ * {
+ * "/api/auth/me": {
+ * "get": {
+ * "summary": "Получение текущего пользователя",
+ * "tags": ["Auth"],
+ * "responses": {
+ * "200": { "description": "Успешно" }
+ * }
+ * }
+ * }
+ * }
  */
 router.get('/me', authMiddleware, authController.getMe);
-
 export default router;
