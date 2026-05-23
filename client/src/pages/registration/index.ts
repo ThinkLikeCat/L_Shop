@@ -113,7 +113,6 @@ export class RegistrationPage {
                 name: formData.get('name') as string,
                 login: formData.get('login') as string,
                 email: formData.get('email') as string,
-                login: formData.get('login') as string,
                 phone: formData.get('phone') as string,
                 password: password,
             };
@@ -149,36 +148,4 @@ export class RegistrationPage {
         });
     }
 
-    private async registerUser(data: IRegistrationData): Promise<void> {
-        const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-        
-        try {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Загрузка...';
-
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-                credentials: 'include' 
-            });
-
-            const result: IRegistrationResponse = await response.json();
-
-            if (response.ok && result.success) {
-                alert(`${result.message}, ${result.user.name}!`);
-                window.location.hash = '#/';
-            } else {
-                alert(`Ошибка: ${result.message || 'Не удалось зарегистрироваться'}`);
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Сетевая ошибка. Попробуйте позже.');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Зарегистрироваться';
-        }
-    }
 }

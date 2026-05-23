@@ -20,19 +20,15 @@ import { VideoBanner } from './components/videobanner/index';
 import { ProductsGrid } from './components/products/index';
 import { Footer } from './components/footer/index';
 
-import { RegistrationPage, checkAuth } from './pages/registration/index';
+import { RegistrationPage, checkAuth, getCurrentUser } from './pages/registration/index';
 import { BasketPage, BasketStore, addToCart, getCartItems } from './pages/trash/index';
 import { DeliveryPage } from './pages/delivery/index';
 import { LoginPage } from './pages/login/index';
-import { BasketPage } from './pages/trash/index';
-import { DeliveryPage } from './pages/delivery/index';
 
 import { logout } from './api/auth/logout';
-import { checkAuth } from './api/auth/me';
 import { CartAPI } from './api/cart';
 
 const app = document.getElementById('app');
-let currentUser: any = null;
 
 if (app) {
     const header = new Header();
@@ -56,31 +52,29 @@ if (app) {
             ${footer.render()}
         `;
         header.init(async (query: string) => {
-            await productsGrid.init(onBuyHandler, { search: query });
+            productsGrid.init(async (product) => {
+                await addToCart({
+                    id: String(product.id),
+                    title: product.title,
+                    price: product.price,
+                    image: product.img
+                });
+                renderBasket();
+            });
         });
 
-        header.updateAuthStatus(!!currentUser);
+        header.updateAuthStatus(!!getCurrentUser());
         setupNavigationListeners();
 
         productsGrid.init(async (product) => {
-            // Добавляем товар через API
             await addToCart({
                 id: String(product.id),
                 title: product.title,
                 price: product.price,
                 image: product.img
             });
-            renderBasket(); 
+            renderBasket();
         });
-
-        try {
-            const res = await CartAPI.add(product.id, 1);
-            if (res.success) {
-                await renderBasket();
-            }
-        } catch (error) {
-            console.error('Ошибка добавления:', error);
-        }
     };
     const renderLogin = () => {
         const main = document.getElementById(mainContentId);
@@ -112,14 +106,14 @@ if (app) {
     };
 
     const renderDelivery = () => {
-        if (!currentUser) return renderLogin();
-        
+        if (!getCurrentUser()) return renderLogin();
+
         const main = document.getElementById(mainContentId);
         if (main) {
             main.innerHTML = deliveryPage.render();
-            deliveryPage.init(currentUser, () => {
+            deliveryPage.init(() => {
                 window.history.pushState({}, '', '/');
-                renderHome(); 
+                renderHome();
             });
             window.history.pushState({}, '', '/delivery');
         }
@@ -144,8 +138,7 @@ if (app) {
         document.getElementById('logout-btn')?.addEventListener('click', async (e) => {
             e.preventDefault();
             if (await logout()) {
-                currentUser = null;
-                window.location.href = '/'; 
+                window.location.href = '/';
             }
         });
     };
@@ -165,30 +158,11 @@ if (app) {
     initApp();
     window.addEventListener('popstate', () => {
         const path = window.location.pathname;
-        if (path !== '/') {
-            app.innerHTML = `
-                ${header.render()}
-                <main id="${mainContentId}"></main>
-                ${footer.render()}
-            `;
-            header.init(async (q) => await renderHome({ search: q }));
-            header.updateAuthStatus(!!currentUser);
-            setupNavigationListeners();
-        }
         if (path === '/login') renderLogin();
         else if (path === '/registration') renderRegistration();
-        else if (path === '/basket') await renderBasket();
+        else if (path === '/basket') renderBasket();
         else if (path === '/delivery') renderDelivery();
-        else await renderHome();
-    };
-
-    initApp();
-    window.addEventListener('popstate', async () => {
-        const path = window.location.pathname;
-        if (path === '/basket') await renderBasket();
-        else if (path === '/delivery') renderDelivery();
-        else if (path === '/login') renderLogin();
-        else await renderHome();
+        else renderHome();
     });
 
 } else {

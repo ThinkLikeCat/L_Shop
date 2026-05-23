@@ -1,6 +1,7 @@
 import './index.css';
 import { Footer } from '../../components/footer/index';
 import { cartApi, productsApi, type Product, type Cart } from '../../api/index';
+import { ICartItem } from '../../api/cart';
 import { getCurrentUser } from '../registration/index';
 
 export interface IBasketItem {
@@ -26,11 +27,10 @@ export async function getCartItems(): Promise<IBasketItem[]> {
         // Авторизованный пользователь - получаем корзину с сервера
         const response = await cartApi.getCart();
         if (response.success && response.data) {
-            const cartData = response.data as { cart?: Cart };
-            serverCart = cartData.cart || null;
+            serverCart = response.data.cart || null;
             
-            if (serverCart && serverCart.items) {
-                return serverCart.items.map(item => ({
+            if (serverCart && serverCart.basket) {
+                return serverCart.basket.map(item => ({
                     id: item.productId,
                     productId: item.productId,
                     title: item.product?.name || 'Товар',
@@ -181,10 +181,29 @@ export class BasketPage {
     public async init(onNavigateToDelivery: () => void): Promise<void> {
         const container = document.getElementById('basket-container');
         try {
-            const data = await CartAPI.getCart();
-            if (data.success) {
-                this.items = data.cart.basket;
-                if (container) container.innerHTML = this.renderContent();
+            const data = await cartApi.getCart();
+            if (data.success && data.data) {
+                this.items = data.data.cart.basket.map(item => ({
+                    count: item.quantity,
+                    product: {
+                        id: item.productId,
+                        name: item.product?.name || 'Товар',
+                        description: '',
+                        price: item.product?.price || 0,
+                        discountPrice: item.product?.discountPrice ?? undefined,
+                        categoryId: '',
+                        images: item.product?.images || [],
+                        stock: 0,
+                        isActive: true,
+                        rating: 0,
+                        reviewsCount: 0,
+                        characteristics: {},
+                        tags: [],
+                        createdAt: '',
+                        updatedAt: '',
+                    } as any
+                }));
+                if (container) container.innerHTML = this.renderFull();
             }
         } catch (e) {
             console.error("Ошибка загрузки корзины", e);
