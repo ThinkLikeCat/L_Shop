@@ -10,6 +10,8 @@
     "backend:start": "cd backend && npm start",
     "client": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
+    "test": "jest --config jest.config.js",
+    "test:coverage": "jest --config jest.config.js --coverage",
     "install:all": "npm install && cd backend && npm install && cd ../client && npm install"
   },
   "dependencies": {
@@ -17,7 +19,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "uuid": "^13.0.0"
+    "uuid": "^11.0.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
