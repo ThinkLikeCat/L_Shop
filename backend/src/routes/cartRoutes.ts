@@ -1,34 +1,58 @@
 import { Router } from 'express';
 import * as cartController from '../controllers/cartController';
 import { authMiddleware } from '../middlewares/authMiddleware';
-
 const router = Router();
-
-// Все маршруты корзины требуют авторизации
 router.use(authMiddleware);
-
 /**
- * @route GET /api/cart
- * @description Получить корзину пользователя
+ * @swagger
+ * {
+ * "/api/cart": {
+ * "get": {
+ * "summary": "Получить корзину пользователя",
+ * "tags": ["Cart"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/', cartController.getCart);
-
 /**
- * @route POST /api/cart
- * @description Добавить товар в корзину
+ * @swagger
+ * {
+ * "/api/cart": {
+ * "post": {
+ * "summary": "Добавить товар в корзину",
+ * "tags": ["Cart"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.post('/', cartController.addToCart);
-
 /**
- * @route PUT /api/cart/:productId
- * @description Обновить количество товара в корзине
+ * @swagger
+ * {
+ * "/api/cart/{productId}": {
+ * "put": {
+ * "summary": "Обновить количество товара",
+ * "tags": ["Cart"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.put('/:productId', cartController.updateCartCount);
-
 /**
- * @route DELETE /api/cart/:productId
- * @description Удалить товар из корзины
+ * @swagger
+ * {
+ * "/api/cart/{productId}": {
+ * "delete": {
+ * "summary": "Удалить товар из корзины",
+ * "tags": ["Cart"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.delete('/:productId', cartController.removeFromCart);
-
 export default router;

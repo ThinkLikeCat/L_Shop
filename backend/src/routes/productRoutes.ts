@@ -1,49 +1,82 @@
 import { Router } from 'express';
 import * as productController from '../controllers/productController';
-
 const router = Router();
-
 /**
- * @route GET /api/products
- * @description Получить все товары с фильтрацией и сортировкой
- * @query search - поиск по названию/описанию
- * @query category - фильтр по категории
- * @query available - только доступные (true/false)
- * @query minPrice - минимальная цена
- * @query maxPrice - максимальная цена
- * @query sort - сортировка (price_asc, price_desc, name_asc, name_desc, rating)
+ * @swagger
+ * {
+ * "/api/products": {
+ * "get": {
+ * "summary": "Получить все товары",
+ * "tags": ["Products"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/', productController.getProducts);
-
 /**
- * @route GET /api/products/search
- * @description Поиск товаров
- * @query q - поисковый запрос
+ * @swagger
+ * {
+ * "/api/products/search": {
+ * "get": {
+ * "summary": "Поиск товаров",
+ * "tags": ["Products"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/search', productController.searchProducts);
-
 /**
- * @route GET /api/products/popular
- * @description Получить популярные товары
+ * @swagger
+ * {
+ * "/api/products/popular": {
+ * "get": {
+ * "summary": "Получить популярные товары",
+ * "tags": ["Products"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/popular', productController.getPopularProducts);
-
 /**
- * @route GET /api/products/categories
- * @description Получить все категории
+ * @swagger
+ * {
+ * "/api/products/categories": {
+ * "get": {
+ * "summary": "Получить все категории",
+ * "tags": ["Products"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/categories', productController.getCategories);
-
 /**
- * @route GET /api/products/category/:categoryId
- * @description Получить товары по категории
+ * @swagger
+ * {
+ * "/api/products/category/{categoryId}": {
+ * "get": {
+ * "summary": "Получить товары по категории",
+ * "tags": ["Products"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/category/:categoryId', productController.getProductsByCategory);
-
 /**
- * @route GET /api/products/:id
- * @description Получить товар по ID
+ * @swagger
+ * {
+ * "/api/products/{id}": {
+ * "get": {
+ * "summary": "Получить товар по ID",
+ * "tags": ["Products"],
+ * "responses": { "200": { "description": "Успешно" } }
+ * }
+ * }
+ * }
  */
 router.get('/:id', productController.getProductById);
-
 export default router;
